@@ -1,21 +1,41 @@
-'use client'
-import { columns } from "../components/table/Coloum";
+"use client";
+import { columnsTransaksi } from "../components/table/Coloum";
 import { DataTable } from "../components/table/DataTable";
 
-const data = [{
-  id: "728ed52f",
-  amount: 100,
-  status: "pending",
-  email: "m@example.com",
-},
-]
+const data = [
+  {
+    id: "728ed52f",
+    transaksi : "ec-01",
+    nama : "udin",
+    total: 100,
+    status: "pending",
+    email: "m@example.com",
+    tes: "asd",
+  },
+];
+const tableColumns = columnsTransaksi;
+
+export default function AdminPage() {
+  return (
+    <div>
+      <div className="w-full m rounded-md bg-slate-200">
+        <header className="p-5 font-bold ">
+          <h2>Dashboard</h2>
+        </header>
+      </div>
+      <div className="overflow-x-auto mt-4">
+        <DataTable columns={tableColumns} data={data} />
+      </div>
+    </div>
+  );
+}
 
 // const router = useRouter()
 
 // const handleEdit = (rowData) => {
 //     const url = `/product/${rowData.id}`
 //     return router.push(url)
-  
+
 // };
 
 // const handleDelete = async(rowData) => {
@@ -26,22 +46,3 @@ const data = [{
 // };
 
 // const tableColumns = columns({ onEdit:onEdit,  onDelete: handleDelete });
-const tableColumns = columns;
-
-export default function AdminPage() {
-  return (
-    <div>
-      <div className="w-full rounded-md bg-slate-200">
-        <header className="p-5 font-bold ">
-          <h2>Dashboard</h2>
-        </header>
-      </div>
-      <div className="mt-2 mb-2">
-          <button type="button" className="px-4 py-2 bg-blue-800 rounded-md text-sky-100 hover:bg-sky-400 cursor-pointer">Tambah</button>
-        </div>
-      <div className="overflow-x-auto" >
-          <DataTable columns={tableColumns} data={data} />
-        </div>
-    </div>
-  );
-}

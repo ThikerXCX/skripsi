@@ -1,8 +1,9 @@
+"use client"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function DropDownMenuAksi({ row,  onDelete }) {
+export default function DropDownMenuAksi({ row }) {
   const router = useRouter();
 
   const handleEdit = (rowData) => {
@@ -14,6 +15,8 @@ export default function DropDownMenuAksi({ row,  onDelete }) {
       method : 'DELETE',
       body : JSON.stringify(rowData)
     })
+
+    console.log(res);
   };
 
   return (
