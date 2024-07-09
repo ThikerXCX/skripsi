@@ -1,5 +1,5 @@
 import { deleteDocById, retriveData, retriveDataById } from "@/app/lib/firebase/service";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function DELETE(request){
     const req = await request.json();

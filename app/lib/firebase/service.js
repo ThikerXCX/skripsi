@@ -75,3 +75,12 @@ export async function deleteDocById(collectionName,id){
 
     return res;
 }
+
+export async function tambahData(collectionName,data){
+    try {
+        await addDoc(collection(firestore, collectionName), data);
+        return { status: true, message: "Data berhasil ditambahkan", statusCode: 200 }
+    } catch (error) {
+        return ({ status: false, message: 'Data gagal ditambahkan', statusCode: 400 })
+    }
+}

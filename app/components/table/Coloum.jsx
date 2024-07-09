@@ -81,3 +81,19 @@ export const columsProduct = [
     cell: ({ row }) => <DropDownMenuAksi row={row} />,
   },
 ];
+
+export const columnsKategori = [
+  {
+    accessorKey : "name",
+    header : "Name",
+  },
+  {
+    accessorKey : "slug",
+    header : "Slug",
+  },
+  {
+    id: "actions",
+    header: "aksi",
+    cell: ({ row }) => <DropDownMenuAksi row={row} route="kategori" />,
+  },
+]

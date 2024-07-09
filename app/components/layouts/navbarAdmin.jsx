@@ -26,6 +26,26 @@ export default function NavbarAdmin() {
           </li>
           <li>
             <Link
+              href="/admin/kategori"
+              className={`${
+                pathName === "/admin/kategori" ? "bg-slate-300" : ""
+              } block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-300 `}
+            >
+              Kategori
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/brand"
+              className={`${
+                pathName === "/admin/brand" ? "bg-slate-300" : ""
+              } block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-300 `}
+            >
+              Brand
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/admin/product"
               className={`${
                 pathName === "/admin/product" ? "bg-slate-300" : ""

@@ -1,4 +1,4 @@
-export async function getData(url) {
+export async function getDataProduk(url) {
     const res = await fetch(url,
         {
             cache : "force-cache",

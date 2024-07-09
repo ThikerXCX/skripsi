@@ -3,15 +3,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function DropDownMenuAksi({ row }) {
+export default function DropDownMenuAksi({ row,route }) {
   const router = useRouter();
 
   const handleEdit = (rowData) => {
-    router.push(`/admin/product/detail/${rowData.id}`);
+    router.push(`/admin/${route}/edit/${rowData.id}`);
   };
 
   const handleDelete = async(rowData) => {
-    const res = await fetch('/api/product',{
+    const res = await fetch(`/api/${route}`,{
       method : 'DELETE',
       body : JSON.stringify(rowData)
     })

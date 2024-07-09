@@ -55,10 +55,10 @@ export function DataTable({ columns, data }) {
       <div className="w-full grid grid-flow-col">
         <div className="flex items-center ml-4 py-4">
           <Input
-            placeholder="Filter emails..."
+            placeholder="Filter name"
             value={table.getColumn("name")?.getFilterValue() ?? ""}
             onChange={(event) =>
-              table.getColumn("email")?.setFilterValue(event.target.value)
+              table.getColumn("name")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
           />
@@ -284,3 +284,5 @@ export function DataTableProduct({ columns, data }) {
     </div>
   );
 }
+
+
