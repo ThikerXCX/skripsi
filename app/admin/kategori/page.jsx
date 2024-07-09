@@ -3,8 +3,9 @@ import { DataTable } from "@/app/components/table/DataTable";
 import { getDataKategori } from "@/app/services/kategori";
 import Link from "next/link";
 
-export default async function ProductPage() {
+export default async function KategoriPage() {
 
+  
   const {data} = await getDataKategori(`${process.env.HOSTNAME}api/kategori`);
 
   return (

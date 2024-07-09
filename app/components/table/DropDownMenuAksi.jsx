@@ -2,6 +2,7 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function DropDownMenuAksi({ row,route }) {
   const router = useRouter();
@@ -15,8 +16,23 @@ export default function DropDownMenuAksi({ row,route }) {
       method : 'DELETE',
       body : JSON.stringify(rowData)
     })
+    if (res.status === 200) {
+      // Tampilkan SweetAlert sukses
+      Swal.fire({
+          icon: 'success',
+          title: 'Data berhasil dihapus!',
+          showConfirmButton: false,
+          timer: 2000 // Durasi tampilan alert dalam milidetik (opsional)
+      }).then(() => {
+          // Redirect setelah SweetAlert ditutup
+          window.location.href = `/admin/${route}`;
+      });
+  }else{
+      console.log(res);
+      setError('gagal menghapus data data');
+      setIsLoading(false);
+  }
 
-    console.log(res);
   };
 
   return (

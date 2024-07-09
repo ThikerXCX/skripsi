@@ -16,10 +16,11 @@ export async function getDataKategori(url) {
 }
 
 export async function getDataKategoriById(url) {
+    console.log(url);
     const res = await fetch(url,{
         cache : "no-cache"
     })
-
+    console.log(res);
     if (!res.ok) {
         throw new Error('gagal mendapatkan data')
     }

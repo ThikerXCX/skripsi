@@ -2,6 +2,7 @@
 
 import { Slugify } from "@/app/lib/helper"
 import { useState } from "react"
+import Swal from "sweetalert2";
 
 export default function TambahKategoriPage() {
     const [slug, setSlug] = useState("")
@@ -30,14 +31,19 @@ export default function TambahKategoriPage() {
         console.log(res);
 
         if (res.status === 200) {
-            alert(res.message)
-            // e.target.reset();
-            // setIsLoading(false)
-            // push('/login');
-
+            // Tampilkan SweetAlert sukses
+            Swal.fire({
+                icon: 'success',
+                title: 'Data berhasil dimasukkan!',
+                showConfirmButton: false,
+                timer: 2000 // Durasi tampilan alert dalam milidetik (opsional)
+            }).then(() => {
+                // Redirect setelah SweetAlert ditutup
+                window.location.href = '/admin/kategori';
+            });
         }else{
             console.log(res);
-            setError('email suda ada');
+            setError('gagal memasukan data');
             setIsLoading(false);
         }
     }
