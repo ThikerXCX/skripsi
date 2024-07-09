@@ -19,7 +19,6 @@ export default function page(props) {
         setId(data.data.id);
         setName(data.data.name);
         setSlug(data.data.slug);
-        console.log(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -43,7 +42,6 @@ export default function page(props) {
         slug: slug,
       }),
     });
-    console.log(res);
 
     if (res.status === 200) {
       // Tampilkan SweetAlert sukses
