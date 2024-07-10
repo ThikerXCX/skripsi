@@ -1,32 +1,17 @@
 "use client";
-
+import uploadImageToStorage from "@/app/lib/firebase/service";
 import { Slugify } from "@/app/lib/helper";
 import { getDataBrand } from "@/app/services/brand";
 import { getDataKategori } from "@/app/services/kategori";
-import { useState, useRef, useEffect } from "react";
-import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 
-export default function TambahProdukPage() {
+export default function CreateProductPage() {
   const [kategori, setKategori] = useState([]);
   const [brand, setBrand] = useState([]);
   const [slug, setSlug] = useState("");
   const [imagePreviews, setImagePreviews] = useState([]);
 
-  // Menggunakan useRef untuk mengambil nilai input
-  const nameRef = useRef(null);
-  const kategoriRef = useRef(null);
-  const brandRef = useRef(null);
-  const hargaRef = useRef(null);
-  const beratRef = useRef(null);
-  const stockRef = useRef(null);
-  const spesifikasiRef = useRef(null);
-  const imageRef = useRef(null);
-
-  const getSlug = (e) => {
-    const nama = e.target.value;
-    const slug = Slugify(nama);
-    setSlug(slug);
-  };
+  const url = process.env.HOSTNAME;
 
   useEffect(() => {
     async function fetchData() {
@@ -38,57 +23,38 @@ export default function TambahProdukPage() {
     fetchData();
   }, []);
 
+  console.log(kategori);
+  console.log(brand);
+
+  const getSlug = (e) => {
+    setSlug(Slugify(e.target.value));
+  };
+
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews(previews);
+    const newImagePreviews = files.map((file) => {
+      return URL.createObjectURL(file);
+    });
+    setImagePreviews(newImagePreviews);
+  };
+
+  const handleChangeImage = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    console.log(selectedFiles);
+    let data = [];
+
+    selectedFiles.map(async (image) => {
+      const imageUrl = await uploadImageToStorage(image);
+      data.push(imageUrl);
+    });
+    console.log(data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("name", nameRef.current.value);
-    formData.append("slug", slug);
-    formData.append("kategori", kategoriRef.current.value);
-    formData.append("brand", brandRef.current.value);
-    formData.append("harga", hargaRef.current.value);
-    formData.append("berat", beratRef.current.value);
-    formData.append("stock", stockRef.current.value);
-    formData.append("spesifikasi", spesifikasiRef.current.value);
-
-    for (let i = 0; i < imageRef.current.files.length; i++) {
-      formData.append("image", imageRef.current.files[i]);
-    }
-
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
-
-    // const res = await fetch("/api/product", {
-    //   method: "POST",
-    //   body: formData,
-    // });
-
-    // if (res.status === 200) {
-    //   Swal.fire({
-    //     icon: "success",
-    //     title: "Produk berhasil ditambahkan!",
-    //     showConfirmButton: false,
-    //     timer: 2000,
-    //   }).then(() => {
-    //     window.location.href = "/admin/product";
-    //   });
-    // } else {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Gagal",
-    //     text: "Gagal menambahkan produk",
-    //     confirmButtonText: "OK",
-    //   });
-    // }
+    const formData = new FormData(e.target);
+    console.log(formData);
   };
-
   return (
     <div className="container mx-auto p-6 shadow-xl rounded-lg bg-gray-50">
       <h1 className="font-bold text-2xl text-center text-blue-700 mb-6">
@@ -109,7 +75,6 @@ export default function TambahProdukPage() {
               type="text"
               name="name_product"
               id="name_product"
-              ref={nameRef}
               className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
             />
           </div>
@@ -144,7 +109,6 @@ export default function TambahProdukPage() {
               className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
               name="kategori"
               id="kategori"
-              ref={kategoriRef}
             >
               {kategori.map((item) => (
                 <option key={item.id} value={item.name}>
@@ -165,7 +129,6 @@ export default function TambahProdukPage() {
               className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
               name="brand"
               id="brand"
-              ref={brandRef}
             >
               {brand.map((item) => (
                 <option key={item.id} value={item.name}>
@@ -188,7 +151,6 @@ export default function TambahProdukPage() {
             min="0"
             name="harga"
             id="harga"
-            ref={hargaRef}
             className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
           />
         </div>
@@ -206,7 +168,6 @@ export default function TambahProdukPage() {
               id="berat"
               required
               min="0"
-              ref={beratRef}
               className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
             />
           </div>
@@ -223,7 +184,6 @@ export default function TambahProdukPage() {
               required
               name="stock"
               id="stock"
-              ref={stockRef}
               className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
             />
           </div>
@@ -239,7 +199,6 @@ export default function TambahProdukPage() {
             name="spesifikasi"
             id="spesifikasi"
             required
-            ref={spesifikasiRef}
             className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
             rows="4"
           ></textarea>
@@ -256,7 +215,6 @@ export default function TambahProdukPage() {
             name="image"
             id="image"
             multiple
-            ref={imageRef}
             className="w-full py-2"
             onChange={handleImageChange}
           />
