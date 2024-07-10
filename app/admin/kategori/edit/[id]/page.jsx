@@ -82,6 +82,7 @@ export default function page(props) {
               id="name"
               onChange={slugify}
               value={name}
+              required
               className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
             />
           </div>

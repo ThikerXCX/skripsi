@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { ArrowUpDown } from "lucide-react";
 import DropDownMenuAksi from "./DropDownMenuAksi";
 import { Button } from "@/components/ui/button";
@@ -60,13 +60,13 @@ export const columsProduct = [
   {
     accessorKey: "price",
     header: "price",
-    cell: ({row}) => {
-      const amount = parseFloat(row.getValue("price"))
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("price"));
       const formatted = new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR",
-      }).format(amount)
- 
+      }).format(amount);
+
       return formatted;
     },
   },
@@ -84,16 +84,32 @@ export const columsProduct = [
 
 export const columnsKategori = [
   {
-    accessorKey : "name",
-    header : "Name",
+    accessorKey: "name",
+    header: "Name",
   },
   {
-    accessorKey : "slug",
-    header : "Slug",
+    accessorKey: "slug",
+    header: "Slug",
   },
   {
     id: "actions",
     header: "aksi",
     cell: ({ row }) => <DropDownMenuAksi row={row} route="kategori" />,
   },
-]
+];
+
+export const columnsBrand = [
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "slug",
+    header: "Slug",
+  },
+  {
+    id: "actions",
+    header: "aksi",
+    cell: ({ row }) => <DropDownMenuAksi row={row} route="brand" />,
+  },
+];

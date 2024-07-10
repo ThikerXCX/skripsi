@@ -20,14 +20,14 @@ export default function TambahKategoriPage() {
     setError("");
     setIsLoading(true);
 
-    const res = await fetch(`/api/kategori`, {
+    const res = await fetch(`/api/brand`, {
       method: "POST",
       body: JSON.stringify({
         name: e.target.name.value,
         slug: slug,
       }),
     });
-    console.log(res);
+    console.log(await res.json());
 
     if (res.status === 200) {
       // Tampilkan SweetAlert sukses
@@ -38,10 +38,15 @@ export default function TambahKategoriPage() {
         timer: 2000, // Durasi tampilan alert dalam milidetik (opsional)
       }).then(() => {
         // Redirect setelah SweetAlert ditutup
-        window.location.href = "/admin/kategori";
+        window.location.href = "/admin/brand";
       });
     } else {
-      console.log(res);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Gagal menambahkan data",
+        confirmButtonText: "OK",
+      });
       setError("gagal memasukan data");
       setIsLoading(false);
     }
@@ -49,7 +54,7 @@ export default function TambahKategoriPage() {
   return (
     <div className="container mx-auto p-6 shadow-xl rounded-lg bg-gray-50">
       <h1 className="font-bold text-2xl text-center text-blue-700 mb-6">
-        Tambah Kategori
+        Tambah Brand
       </h1>
       <form onSubmit={submitHandler} className="mt-4 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -58,7 +63,7 @@ export default function TambahKategoriPage() {
               htmlFor="name"
               className="block text-sm font-medium text-gray-900 mb-2"
             >
-              Nama Kategori
+              Nama Brand
             </label>
             <input
               onChange={slugfy}
@@ -74,7 +79,7 @@ export default function TambahKategoriPage() {
               htmlFor="name"
               className="block text-sm font-medium text-gray-900 mb-2"
             >
-              Slug Kategori
+              Slug Brand
             </label>
             <input
               type="text"
@@ -93,7 +98,7 @@ export default function TambahKategoriPage() {
             disabled={isLoading}
             className="inline-block px-6 py-2 text-white bg-blue-600 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
           >
-            Tambah kategori
+            Tambah Brand
           </button>
         </div>
       </form>
