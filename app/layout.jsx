@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "EC Computer",
   icons: {
-    icon: '/favicon.ico',
+    icon: "/favicon.ico",
   },
   description: "toko jual beli laptop,service laptop",
 };
@@ -17,13 +17,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Head>
-        <link rel="shortcut icon" href="/icon/favicon.ico" type="image/x-icon" />
-      </Head>
-      <body className={cn("min-h-screen bg-background font-sans antialiased",inter.className)
-          }>
-            <NavbarUser/>
-            {children}</body>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          inter.className
+        )}
+      >
+        <NavbarUser />
+        {children}
+      </body>
     </html>
   );
 }

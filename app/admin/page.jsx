@@ -5,8 +5,8 @@ import { DataTable } from "../components/table/DataTable";
 const data = [
   {
     id: "728ed52f",
-    transaksi : "ec-01",
-    nama : "udin",
+    transaksi: "ec-01",
+    name: "udin",
     total: 100,
     status: "pending",
     email: "m@example.com",

@@ -1,14 +1,15 @@
 "use client";
 
+import DropDownBrand from "@/app/components/form/dropdownbrand";
+import DropDwonKategori from "@/app/components/form/dropdownkategori";
+import InputComponent from "@/app/components/form/inputComponent";
+import InputNumberComponenet from "@/app/components/form/inputNumberComponent";
+import { uploadImageToStorage } from "@/app/lib/firebase/service";
 import { Slugify } from "@/app/lib/helper";
-import { getDataBrand } from "@/app/services/brand";
-import { getDataKategori } from "@/app/services/kategori";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, createRef } from "react";
 import Swal from "sweetalert2";
 
 export default function TambahProdukPage() {
-  const [kategori, setKategori] = useState([]);
-  const [brand, setBrand] = useState([]);
   const [slug, setSlug] = useState("");
   const [imagePreviews, setImagePreviews] = useState([]);
 
@@ -23,20 +24,8 @@ export default function TambahProdukPage() {
   const imageRef = useRef(null);
 
   const getSlug = (e) => {
-    const nama = e.target.value;
-    const slug = Slugify(nama);
-    setSlug(slug);
+    setSlug(Slugify(e.target.value));
   };
-
-  useEffect(() => {
-    async function fetchData() {
-      const kategoris = await getDataKategori(`/api/kategori`);
-      setKategori(kategoris.data);
-      const brands = await getDataBrand(`/api/brand`);
-      setBrand(brands.data);
-    }
-    fetchData();
-  }, []);
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -44,30 +33,39 @@ export default function TambahProdukPage() {
     setImagePreviews(previews);
   };
 
+  const uploadImage = async () => {
+    const selectedFiles = Array.from(imageRef.current.files);
+    const data = await Promise.all(
+      selectedFiles.map(async (image) => {
+        const imageUrl = await uploadImageToStorage(image);
+        return imageUrl;
+      })
+    );
+    return data;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("name", nameRef.current.value);
-    formData.append("slug", slug);
-    formData.append("kategori", kategoriRef.current.value);
-    formData.append("brand", brandRef.current.value);
-    formData.append("harga", hargaRef.current.value);
-    formData.append("berat", beratRef.current.value);
-    formData.append("stock", stockRef.current.value);
-    formData.append("spesifikasi", spesifikasiRef.current.value);
+    console.log(hargaRef.current.value);
+    console.log(beratRef.current.value);
 
-    for (let i = 0; i < imageRef.current.files.length; i++) {
-      formData.append("image", imageRef.current.files[i]);
-    }
+    // const imageLink = await uploadImage();
 
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
+    // console.log(imageLink);
 
     // const res = await fetch("/api/product", {
     //   method: "POST",
-    //   body: formData,
+    //   body: JSON.stringify({
+    //     name: nameRef.current.value,
+    //     slug: slug,
+    //     harga: hargaRef.current.value,
+    //     berat: beratRef.current.value,
+    //     spesifikasi: spesifikasiRef.current.value,
+    //     kategori: kategoriRef.current.value,
+    //     brand: brandRef.current.value,
+    //     image: imageLink,
+    //   }),
     // });
 
     // if (res.status === 200) {
@@ -132,101 +130,32 @@ export default function TambahProdukPage() {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
-            <label
-              htmlFor="kategori"
-              className="block text-sm font-medium text-gray-900 mb-2"
-            >
-              Kategori
-            </label>
-            <select
-              required
-              className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
-              name="kategori"
-              id="kategori"
-              ref={kategoriRef}
-            >
-              {kategori.map((item) => (
-                <option key={item.id} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
-            <label
-              htmlFor="brand"
-              className="block text-sm font-medium text-gray-900 mb-2"
-            >
-              Brand
-            </label>
-            <select
-              required
-              className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
-              name="brand"
-              id="brand"
-              ref={brandRef}
-            >
-              {brand.map((item) => (
-                <option key={item.id} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <DropDwonKategori ref={kategoriRef} />
+          <DropDownBrand ref={brandRef} />
         </div>
-        <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
-          <label
-            htmlFor="harga"
-            className="block text-sm font-medium text-gray-900 mb-2"
-          >
-            Harga
-          </label>
-          <input
-            type="number"
+        <InputNumberComponenet
+          title="Harga"
+          name="harga"
+          id="harga"
+          min="1"
+          ref={hargaRef}
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <InputNumberComponenet
+            title="berat"
+            name="berat"
+            id="berat"
             required
             min="0"
-            name="harga"
-            id="harga"
-            ref={hargaRef}
-            className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
+            ref={beratRef}
           />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
-            <label
-              htmlFor="berat"
-              className="block text-sm font-medium text-gray-900 mb-2"
-            >
-              Berat
-            </label>
-            <input
-              type="number"
-              name="berat"
-              id="berat"
-              required
-              min="0"
-              ref={beratRef}
-              className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
-            />
-          </div>
-          <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
-            <label
-              htmlFor="stock"
-              className="block text-sm font-medium text-gray-900 mb-2"
-            >
-              Stock
-            </label>
-            <input
-              type="number"
-              min="0"
-              required
-              name="stock"
-              id="stock"
-              ref={stockRef}
-              className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
-            />
-          </div>
+          <InputNumberComponenet
+            title="stock"
+            min="1"
+            name="stock"
+            id="stock"
+            ref={stockRef}
+          />
         </div>
         <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
           <label

@@ -1,5 +1,4 @@
 export async function getDataKategori(url) {
-  console.log(url);
   const res = await fetch(url, {
     cache: "force-cache",
     next: {
