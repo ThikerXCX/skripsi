@@ -2,7 +2,6 @@
 
 import DropDownBrand from "@/app/components/form/dropdownbrand";
 import DropDwonKategori from "@/app/components/form/dropdownkategori";
-import InputComponent from "@/app/components/form/inputComponent";
 import InputNumberComponenet from "@/app/components/form/inputNumberComponent";
 import { uploadImageToStorage } from "@/app/lib/firebase/service";
 import { Slugify } from "@/app/lib/helper";
@@ -47,44 +46,40 @@ export default function TambahProdukPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(hargaRef.current.value);
-    console.log(beratRef.current.value);
+    const imageLink = await uploadImage();
 
-    // const imageLink = await uploadImage();
+    const res = await fetch("/api/product", {
+      method: "POST",
+      body: JSON.stringify({
+        name: nameRef.current.value,
+        slug: slug,
+        harga: hargaRef.current.value,
+        stock: parseInt(stockRef.current.value, 10),
+        berat: parseFloat(beratRef.current.value),
+        spesifikasi: spesifikasiRef.current.value,
+        kategori: kategoriRef.current.value,
+        brand: brandRef.current.value,
+        image: imageLink,
+      }),
+    });
 
-    // console.log(imageLink);
-
-    // const res = await fetch("/api/product", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     name: nameRef.current.value,
-    //     slug: slug,
-    //     harga: hargaRef.current.value,
-    //     berat: beratRef.current.value,
-    //     spesifikasi: spesifikasiRef.current.value,
-    //     kategori: kategoriRef.current.value,
-    //     brand: brandRef.current.value,
-    //     image: imageLink,
-    //   }),
-    // });
-
-    // if (res.status === 200) {
-    //   Swal.fire({
-    //     icon: "success",
-    //     title: "Produk berhasil ditambahkan!",
-    //     showConfirmButton: false,
-    //     timer: 2000,
-    //   }).then(() => {
-    //     window.location.href = "/admin/product";
-    //   });
-    // } else {
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "Gagal",
-    //     text: "Gagal menambahkan produk",
-    //     confirmButtonText: "OK",
-    //   });
-    // }
+    if (res.status === 200) {
+      Swal.fire({
+        icon: "success",
+        title: "Produk berhasil ditambahkan!",
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        window.location.href = "/admin/product";
+      });
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Gagal menambahkan produk",
+        confirmButtonText: "OK",
+      });
+    }
   };
 
   return (

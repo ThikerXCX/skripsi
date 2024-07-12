@@ -58,10 +58,10 @@ export const columsProduct = [
     header: "Kategori",
   },
   {
-    accessorKey: "price",
-    header: "price",
+    accessorKey: "harga",
+    header: "harga",
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("price"));
+      const amount = parseFloat(row.getValue("harga"));
       const formatted = new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR",
@@ -78,7 +78,7 @@ export const columsProduct = [
   {
     id: "actions",
     header: "aksi",
-    cell: ({ row }) => <DropDownMenuAksi row={row} />,
+    cell: ({ row }) => <DropDownMenuAksi row={row} route="product" />,
   },
 ];
 

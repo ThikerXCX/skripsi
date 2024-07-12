@@ -18,6 +18,8 @@ export default function DropDownMenuAksi({ row, route }) {
   };
 
   const handleDelete = async (rowData) => {
+    console.log(route);
+    console.log(rowData);
     const res = await fetch(`/api/${route}`, {
       method: "DELETE",
       body: JSON.stringify(rowData),
@@ -34,9 +36,12 @@ export default function DropDownMenuAksi({ row, route }) {
         window.location.href = `/admin/${route}`;
       });
     } else {
-      console.log(res);
-      setError("gagal menghapus data data");
-      setIsLoading(false);
+      Swal.fire({
+        title: "Error",
+        text: res.message,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
 
