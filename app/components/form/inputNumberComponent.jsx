@@ -26,4 +26,6 @@ const InputNumberComponenet = forwardRef(
   }
 );
 
+InputNumberComponenet.displayName = "InputNumberComponenet";
+
 export default InputNumberComponenet;

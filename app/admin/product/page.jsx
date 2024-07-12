@@ -4,10 +4,7 @@ import { getDataProduk } from "@/app/services/products";
 import Link from "next/link";
 
 export default async function ProductPage() {
-
-  const {data} = await getDataProduk(`${process.env.HOSTNAME}api/product`);
-
-  console.log(data);
+  const { data } = await getDataProduk(`${process.env.HOSTNAME}api/product`);
 
   return (
     <div className="w-full p-4 bg-slate-200 rounded-md h-screen">

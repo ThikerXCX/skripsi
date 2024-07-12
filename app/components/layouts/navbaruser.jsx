@@ -6,7 +6,12 @@ import { usePathname } from "next/navigation";
 export default function NavbarUser() {
   const { data: session, status } = useSession();
   const pathName = usePathname();
-  const disabledPath = ["/admin", "/login", "/register"];
+  const disabledPath = ["/login", "/register"];
+  const adminpage = /^\/admin\/?.*/;
+
+  if (adminpage.test(pathName)) {
+    return null; // or return an empty fragment <> </>
+  }
 
   if (disabledPath.includes(pathName)) {
     return null; // or return an empty fragment <> </>

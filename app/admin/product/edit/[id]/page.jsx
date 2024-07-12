@@ -6,8 +6,12 @@ import { getDataById } from "@/app/services";
 import { useEffect, useState } from "react";
 import { Slugify } from "@/app/lib/helper";
 import SubmitButton from "@/app/components/form/submitButton";
+import { ConfirmAlert } from "@/app/lib/utils/confirmalert";
+import { storage } from "@/app/lib/firebase/init";
+import { deleteObject, ref } from "firebase/storage";
+import { ShowToast } from "@/app/lib/utils/successalert";
 
-export default function UpdatePageProduct(props) {
+export default function EditProductPage(props) {
   const { params } = props;
   const [slug, setSlug] = useState();
   const [name, setName] = useState();
@@ -50,12 +54,18 @@ export default function UpdatePageProduct(props) {
     setSlug(Slugify(e.target.value));
   }
 
-  function handleDeleteImage(index, ref) {}
+  const handleDeleteImage = async (index, refs) => {
+    let isConfirm = await ConfirmAlert();
+    if (isConfirm) {
+      let refFile = ref(storage, refs);
+      await deleteObject(refFile);
+      setGambar(gambar.filter((item, idx) => idx !== index));
+    }
+    ShowToast("success", "gambar berhasil diHapus");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(brand);
-    console.log(kategori);
   };
 
   return (
@@ -214,7 +224,7 @@ export default function UpdatePageProduct(props) {
           )}
         </div>
         <div className="mt-6 text-center">
-          <SubmitButton>Update Produk</SubmitButton>
+          <SubmitButton disabled={loading}>Update Produk</SubmitButton>
         </div>
       </form>
     </div>

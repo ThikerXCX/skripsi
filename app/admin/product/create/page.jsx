@@ -3,6 +3,7 @@
 import DropDownBrand from "@/app/components/form/dropdownbrand";
 import DropDwonKategori from "@/app/components/form/dropdownkategori";
 import InputNumberComponenet from "@/app/components/form/inputNumberComponent";
+import SubmitButton from "@/app/components/form/submitButton";
 import { uploadImageToStorage } from "@/app/lib/firebase/service";
 import { Slugify } from "@/app/lib/helper";
 import { useState, useRef, createRef } from "react";
@@ -11,6 +12,7 @@ import Swal from "sweetalert2";
 export default function TambahProdukPage() {
   const [slug, setSlug] = useState("");
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Menggunakan useRef untuk mengambil nilai input
   const nameRef = useRef(null);
@@ -45,6 +47,7 @@ export default function TambahProdukPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const imageLink = await uploadImage();
 
@@ -64,6 +67,7 @@ export default function TambahProdukPage() {
     });
 
     if (res.status === 200) {
+      setLoading(false);
       Swal.fire({
         icon: "success",
         title: "Produk berhasil ditambahkan!",
@@ -73,6 +77,7 @@ export default function TambahProdukPage() {
         window.location.href = "/admin/product";
       });
     } else {
+      setLoading(false);
       Swal.fire({
         icon: "error",
         title: "Gagal",
@@ -201,12 +206,7 @@ export default function TambahProdukPage() {
           )}
         </div>
         <div className="mt-6 text-center">
-          <button
-            type="submit"
-            className="inline-block px-6 py-2 text-white bg-blue-600 rounded-full shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          >
-            Tambah Produk
-          </button>
+          <SubmitButton disabled={loading}>Tambah Produk</SubmitButton>
         </div>
       </form>
     </div>

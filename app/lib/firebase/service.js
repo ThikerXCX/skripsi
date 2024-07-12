@@ -24,6 +24,7 @@ export async function uploadImageToStorage(image) {
   const res = {
     url: imageUrl,
     ref: pathName,
+    type: image.type,
   };
   return res;
 }

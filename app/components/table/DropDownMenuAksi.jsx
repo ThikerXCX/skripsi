@@ -1,4 +1,5 @@
 "use client";
+import { ConfirmAlert } from "@/app/lib/utils/confirmalert";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,28 +19,31 @@ export default function DropDownMenuAksi({ row, route }) {
   };
 
   const handleDelete = async (rowData) => {
-    const res = await fetch(`/api/${route}`, {
-      method: "DELETE",
-      body: JSON.stringify(rowData),
-    });
-    if (res.status === 200) {
-      // Tampilkan SweetAlert sukses
-      Swal.fire({
-        icon: "success",
-        title: "Data berhasil dihapus!",
-        showConfirmButton: false,
-        timer: 2000, // Durasi tampilan alert dalam milidetik (opsional)
-      }).then(() => {
-        // Redirect setelah SweetAlert ditutup
-        window.location.href = `/admin/${route}`;
+    let isConfirm = await ConfirmAlert();
+    if (isConfirm) {
+      const res = await fetch(`/api/${route}`, {
+        method: "DELETE",
+        body: JSON.stringify(rowData),
       });
-    } else {
-      Swal.fire({
-        title: "Error",
-        text: res.message,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+      if (res.status === 200) {
+        // Tampilkan SweetAlert sukses
+        Swal.fire({
+          icon: "success",
+          title: "Data berhasil dihapus!",
+          showConfirmButton: false,
+          timer: 2000, // Durasi tampilan alert dalam milidetik (opsional)
+        }).then(() => {
+          // Redirect setelah SweetAlert ditutup
+          window.location.href = `/admin/${route}`;
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: res.message,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
     }
   };
 

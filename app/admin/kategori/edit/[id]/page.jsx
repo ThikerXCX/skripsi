@@ -4,7 +4,7 @@ import { getDataKategoriById } from "@/app/services/kategori";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-export default function page(props) {
+export default function EditKategoriPage(props) {
   const { params } = props;
   const [name, setName] = useState("");
   const [id, setId] = useState("");

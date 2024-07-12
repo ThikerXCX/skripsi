@@ -4,7 +4,7 @@ import { getDataById } from "@/app/services";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-export default function page(props) {
+export default function EditBrandPage(props) {
   const { params } = props;
   const [name, setName] = useState("");
   const [id, setId] = useState("");

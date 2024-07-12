@@ -22,4 +22,6 @@ const InputComponent = forwardRef(({ title, name, value, id }, ref) => {
   );
 });
 
+InputComponent.displayName = "InputComponent";
+
 export default InputComponent;

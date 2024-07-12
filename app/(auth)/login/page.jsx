@@ -1,7 +1,7 @@
 "use client";
 
 import InputLogin from "@/app/components/form/inputLogin";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -11,6 +11,8 @@ export default function LoginPage({ searchParams }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { push } = useRouter();
+
+  const { data: session } = useSession();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,7 +28,10 @@ export default function LoginPage({ searchParams }) {
         callbackUrl: urlCallback,
       });
       if (!res?.error) {
-        push("/product");
+        if (session?.user.role === "admin") {
+          push("/admin/");
+        }
+        push("/");
       } else {
         if (res.status === 401) {
           setError("data yang dimasukan tidak cocok");
