@@ -86,6 +86,7 @@ export async function login(data) {
     id: doc.id,
     ...doc.data(),
   }));
+  console.log(users);
 
   if (users) {
     return users[0];

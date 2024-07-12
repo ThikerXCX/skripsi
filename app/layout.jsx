@@ -3,6 +3,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import NavbarUser from "./components/layouts/navbaruser";
 import Head from "next/head";
+import AuthProvider from "./components/layouts/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,8 +24,10 @@ export default function RootLayout({ children }) {
           inter.className
         )}
       >
-        <NavbarUser />
-        {children}
+        <AuthProvider>
+          <NavbarUser />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

@@ -50,10 +50,7 @@ export default function UpdatePageProduct(props) {
     setSlug(Slugify(e.target.value));
   }
 
-  function handleDeleteImage(index, ref) {
-    const newImages = [...imagePreviews];
-    newImages.splice(index, 1);
-  }
+  function handleDeleteImage(index, ref) {}
 
   const handleSubmit = (e) => {
     e.preventDefault();
