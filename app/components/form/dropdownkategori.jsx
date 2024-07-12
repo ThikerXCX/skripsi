@@ -3,6 +3,7 @@ import { getDataKategori } from "@/app/services/kategori";
 import React, { useEffect, useState } from "react";
 
 const DropDwonKategori = (props, ref) => {
+  const { value, onChange } = props;
   const [kategori, setKategori] = useState([]);
   useEffect(() => {
     async function fetchData() {
@@ -26,12 +27,27 @@ const DropDwonKategori = (props, ref) => {
         name="kategori"
         id="kategori"
         ref={ref}
+        onChange={onChange}
       >
-        {kategori.map((item) => (
-          <option key={item.id} value={item.name}>
-            {item.name}
-          </option>
-        ))}
+        {value
+          ? kategori.map((item) => (
+              <option
+                key={item.id}
+                selected={value === item.name ? true : false}
+                value={item.name}
+              >
+                {item.name}
+              </option>
+            ))
+          : kategori.map((item) => (
+              <option
+                key={item.id}
+                selected={value === item.name ? true : false}
+                value={item.name}
+              >
+                {item.name}
+              </option>
+            ))}
       </select>
     </div>
   );

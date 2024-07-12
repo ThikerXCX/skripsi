@@ -5,7 +5,7 @@ import {
   retriveDataById,
   tambahData,
 } from "@/app/lib/firebase/service";
-import { deleteObject, refFromUrl } from "firebase/storage";
+import { deleteObject, ref } from "firebase/storage";
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
@@ -16,10 +16,8 @@ export async function DELETE(request) {
   try {
     Promise.all(
       imageLink.forEach(async (item) => {
-        console.log(item);
-        let ref = refFromUrl(storage, item);
-        console.log(ref);
-        await deleteObject(ref);
+        let refFile = ref(storage, item.ref);
+        await deleteObject(refFile);
       })
     );
 

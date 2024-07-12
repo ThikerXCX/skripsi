@@ -18,8 +18,6 @@ export default function DropDownMenuAksi({ row, route }) {
   };
 
   const handleDelete = async (rowData) => {
-    console.log(route);
-    console.log(rowData);
     const res = await fetch(`/api/${route}`, {
       method: "DELETE",
       body: JSON.stringify(rowData),

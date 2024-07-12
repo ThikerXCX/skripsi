@@ -3,6 +3,7 @@ import { getDataBrand } from "@/app/services/brand";
 const { useState, useEffect, forwardRef } = require("react");
 
 const DropDownBrand = forwardRef((props, ref) => {
+  const { value, onChange } = props;
   const [brand, setBrand] = useState([]);
 
   useEffect(() => {
@@ -26,13 +27,24 @@ const DropDownBrand = forwardRef((props, ref) => {
         className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
         name="brand"
         id="brand"
+        onChange={onChange}
         ref={ref}
       >
-        {brand.map((item) => (
-          <option key={item.id} value={item.name}>
-            {item.name}
-          </option>
-        ))}
+        {value
+          ? brand.map((item) => (
+              <option
+                key={item.id}
+                selected={value === item.name ? true : false}
+                value={item.name}
+              >
+                {item.name}
+              </option>
+            ))
+          : brand.map((item) => (
+              <option key={item.id} value={item.name}>
+                {item.name}
+              </option>
+            ))}
       </select>
     </div>
   );

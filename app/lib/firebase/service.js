@@ -17,11 +17,15 @@ import { v4 } from "uuid";
 const firestore = getFirestore(app);
 
 export async function uploadImageToStorage(image) {
-  const storageRef = ref(storage, `images/${v4() + image.name}`);
+  const pathName = `images/${v4()}`;
+  const storageRef = ref(storage, pathName);
   await uploadBytes(storageRef, image);
   const imageUrl = await getDownloadURL(storageRef);
-  console.log(imageUrl);
-  return imageUrl;
+  const res = {
+    url: imageUrl,
+    ref: pathName,
+  };
+  return res;
 }
 
 export async function retriveData(collectionName) {
