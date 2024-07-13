@@ -43,7 +43,7 @@ export async function DELETE(request) {
   const res = await deleteDocById("kategori", id);
   revalidateTag("kategori");
   return NextResponse.json(
-    { status: 200, message: "product berhasil di hapus" },
+    { status: 200, message: "kategori berhasil di hapus" },
     { res }
   );
 }
@@ -61,7 +61,7 @@ export async function PUT(request) {
 
   revalidateTag("kategori");
   return NextResponse.json(
-    { status: 200, message: "product berhasil di update" },
+    { status: 200, message: "Kategori berhasil di update" },
     { res }
   );
 }

@@ -183,7 +183,7 @@ export function DataTableProduct({ columns, data }) {
       <div className="w-full grid grid-flow-col">
         <div className="flex items-center ml-4 py-4">
           <Input
-            placeholder="Filter Name Product"
+            placeholder="Filter Name"
             value={table.getColumn("name")?.getFilterValue() ?? ""}
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
@@ -284,5 +284,3 @@ export function DataTableProduct({ columns, data }) {
     </div>
   );
 }
-
-

@@ -113,3 +113,28 @@ export const columnsBrand = [
     cell: ({ row }) => <DropDownMenuAksi row={row} route="brand" />,
   },
 ];
+
+export const columnsInfo = [
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "slug",
+    header: "Slug",
+  },
+  {
+    accessorKey: "deskripsi",
+    header: "Deskripsi",
+    cell: ({ row }) => (
+      <div className="truncate whitespace-nowrap overflow-hidden max-w-xs">
+        {row.getValue("deskripsi")}
+      </div>
+    ),
+  },
+  {
+    id: "actions",
+    header: "aksi",
+    cell: ({ row }) => <DropDownMenuAksi row={row} route="info" />,
+  },
+];
