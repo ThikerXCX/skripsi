@@ -10,6 +10,7 @@ import { ConfirmAlert } from "@/app/lib/utils/confirmalert";
 import { storage } from "@/app/lib/firebase/init";
 import { deleteObject, ref } from "firebase/storage";
 import { ShowToast } from "@/app/lib/utils/successalert";
+import { uploadImageToStorage } from "@/app/lib/firebase/service";
 
 export default function EditProductPage(props) {
   const { params } = props;
@@ -57,15 +58,78 @@ export default function EditProductPage(props) {
   const handleDeleteImage = async (index, refs) => {
     let isConfirm = await ConfirmAlert();
     if (isConfirm) {
+      // delete from storage
       let refFile = ref(storage, refs);
       await deleteObject(refFile);
-      setGambar(gambar.filter((item, idx) => idx !== index));
+      //update field gambar pada product
+      let newState = gambar.filter((item, idx) => idx !== index);
+      setGambar(newState);
+      const res = await fetch("/api/product/image", {
+        method: "DELETE",
+        body: JSON.stringify({
+          id: params.id,
+          image: newState,
+        }),
+      });
+      if (res.status == 200) {
+        ShowToast("success", "gambar berhasil diHapus");
+      }
     }
-    ShowToast("success", "gambar berhasil diHapus");
   };
 
-  const handleSubmit = (e) => {
+  const uploadImage = async (e) => {
+    const selectedFiles = Array.from(e.target.image.files);
+    const data = await Promise.all(
+      selectedFiles.map(async (image) => {
+        const imageUrl = await uploadImageToStorage(image);
+        return imageUrl;
+      })
+    );
+    return data;
+  };
+
+  const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
+    let newImage = Array.from(e.target.image.files);
+    let updatedArray = [...gambar];
+
+    if (newImage.length !== 0) {
+      let imageUrl = await uploadImage(e);
+      updatedArray = [...updatedArray, ...imageUrl];
+      setGambar(updatedArray); // Memperbarui state gambar
+    }
+
+    const res = await fetch("/api/product", {
+      method: "PUT",
+      body: JSON.stringify({
+        id: params.id,
+        name: name,
+        slug: slug,
+        kategori: kategori,
+        brand: brand,
+        harga: harga,
+        berat: berat,
+        stock: stock,
+        spesifikasi: spesifikasi,
+        image: updatedArray, // Menggunakan updatedArray yang terbaru
+      }),
+    });
+    if (res.status === 200) {
+      // Tampilkan SweetAlert sukses
+      Swal.fire({
+        icon: "success",
+        title: "Data berhasil diupdate!",
+        showConfirmButton: false,
+        timer: 2000,
+      }).then(() => {
+        window.location.href = "/admin/product";
+      });
+    } else {
+      console.log(res);
+      setError("gagal memasukan data");
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -74,6 +138,7 @@ export default function EditProductPage(props) {
         Update Produk
       </h1>
       <form onSubmit={handleSubmit} className="mt-4 space-y-6">
+        <input type="hidden" value={params.id} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
             <label

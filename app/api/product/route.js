@@ -4,6 +4,7 @@ import {
   retriveData,
   retriveDataById,
   tambahData,
+  updateFieldById,
 } from "@/app/lib/firebase/service";
 import { deleteObject, ref } from "firebase/storage";
 import { revalidateTag } from "next/cache";
@@ -60,4 +61,27 @@ export async function GET(request) {
   const products = await retriveData("products");
   console.log(products);
   return NextResponse.json({ status: 200, data: products });
+}
+
+export async function PUT(request) {
+  const req = await request.json();
+  const id = req.id;
+  const data = {
+    name: req.name,
+    slug: req.slug,
+    kategori: req.kategori,
+    brand: req.brand,
+    harga: req.harga,
+    berat: req.berat,
+    stock: req.stock,
+    spesifikasi: req.spesifikasi,
+    image: req.image,
+  };
+
+  const res = await updateFieldById("products", id, data);
+  revalidateTag("products");
+  return NextResponse.json(
+    { status: 200, message: "product berhasil di update" },
+    { res }
+  );
 }
