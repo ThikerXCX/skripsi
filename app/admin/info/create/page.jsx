@@ -16,8 +16,23 @@ export default function CreateInfoPage() {
   function getSlug(e) {
     setSlug(Slugify(e.target.value));
   }
+  const uploadImage = async (e) => {
+    const selectedFiles = Array.from(e.target.image.files);
+    const data = await Promise.all(
+      selectedFiles.map(async (image) => {
+        const imageUrl = await uploadImageToStorage(image);
+        return imageUrl;
+      })
+    );
+    return data;
+  };
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
+
+    const imageUrl = await uploadImage(e);
+
+    setLoading(false);
   };
   return (
     <div className="container mx-auto p-6 shadow-xl rounded-lg bg-gray-50">
@@ -28,7 +43,7 @@ export default function CreateInfoPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white p-5 rounded-lg shadow-md border border-gray-200">
             <label
-              htmlFor="name_product"
+              htmlFor="name"
               className="block text-sm font-medium text-gray-900 mb-2"
             >
               Nama Produk
@@ -37,8 +52,8 @@ export default function CreateInfoPage() {
               required
               onChange={getSlug}
               type="text"
-              name="name_product"
-              id="name_product"
+              name="name"
+              id="name"
               className="w-full rounded-lg py-2 px-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 transition"
             />
           </div>
