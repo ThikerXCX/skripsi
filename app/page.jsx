@@ -1,12 +1,12 @@
-import Productcard from "./components/card/Productcard";
 import Banner from "./components/layouts/Banner";
 import Footer from "./components/layouts/Footer";
+import ProductCollection from "./components/product/ProductCollection";
 
 export default function Home() {
   return (
     <>
       <Banner />
-      <Productcard />
+      <ProductCollection limit="8" />
       <Footer />
     </>
   );
