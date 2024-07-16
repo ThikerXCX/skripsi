@@ -55,7 +55,7 @@ export default function NavbarAdmin() {
             <Link
               href="/admin/product"
               className={`${
-                pathName === "/admin/product" ? "bg-slate-300" : ""
+                pathName.startsWith("/admin/product") ? "bg-slate-300" : ""
               } block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-300 `}
             >
               Produk
