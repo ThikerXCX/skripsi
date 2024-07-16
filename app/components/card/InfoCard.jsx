@@ -7,7 +7,11 @@ export default function InfoCard(props) {
     <li>
       {data.image[0].type == "video/mp4" ? (
         <>
-          <video src={data.image[0].url} controls></video>
+          <video controls>
+            <source src={data.image[0].url} type="video/mp4" />
+            <track label="English" />
+            Your browser does not support the video tag.
+          </video>
         </>
       ) : (
         <Link
@@ -16,9 +20,8 @@ export default function InfoCard(props) {
         >
           <Image
             src={data.image[0].url}
-            width={100}
-            height={100}
-            quality="100%"
+            width={500}
+            height={500}
             alt={data.slug}
             className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
           />

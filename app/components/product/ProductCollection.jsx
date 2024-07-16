@@ -1,5 +1,4 @@
 import { getDataProduk } from "@/app/services/products";
-import Productcard from "../card/InfoCard";
 import ProductCart from "../card/ProductCart";
 
 export default async function ProductCollection(props) {
@@ -22,12 +21,17 @@ export default async function ProductCollection(props) {
         </header>
 
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {data.map((item, index) => {
-            if (index < limit) {
-              // return <Productcard key={item.id} data={item} />;
-              return <ProductCart key={item.id} data={item} />;
-            }
-          })}
+          {limit
+            ? data.map((item, index) => {
+                if (index < limit) {
+                  // return <Productcard key={item.id} data={item} />;
+                  return <ProductCart key={item.id} data={item} />;
+                }
+              })
+            : data.map((item, index) => {
+                // return <Productcard key={item.id} data={item} />;
+                return <ProductCart key={item.id} data={item} />;
+              })}
         </ul>
       </div>
     </section>

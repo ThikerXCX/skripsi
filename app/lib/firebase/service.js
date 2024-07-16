@@ -10,6 +10,7 @@ import {
   query,
   updateDoc,
   where,
+  serverTimestamp,
 } from "firebase/firestore";
 import { app, storage } from "./init";
 import { v4 } from "uuid";
@@ -107,6 +108,7 @@ export async function updateFieldById(collectionName, id, data) {
 }
 
 export async function tambahData(collectionName, data) {
+  data.created_at = serverTimestamp();
   try {
     await addDoc(collection(firestore, collectionName), data);
     return {

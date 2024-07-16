@@ -2,6 +2,7 @@ import { getDataInfo } from "@/app/services/info";
 import InfoCard from "../card/InfoCard";
 
 export default async function CollectionInfoComponent(props) {
+  const { limit } = props ?? null;
   const { data } = await getDataInfo(`${process.env.HOSTNAME}api/info`);
   return (
     <section>
@@ -13,7 +14,15 @@ export default async function CollectionInfoComponent(props) {
         </header>
 
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <InfoCard data={data[0]} />
+          {limit
+            ? data.map((item, index) => {
+                if (index < limit) {
+                  return <InfoCard key={item.id} data={item} />;
+                }
+              })
+            : data.map((item, index) => {
+                return <InfoCard key={item.id} data={item} />;
+              })}
         </ul>
       </div>
     </section>

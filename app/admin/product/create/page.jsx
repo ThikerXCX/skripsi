@@ -6,7 +6,8 @@ import InputNumberComponenet from "@/app/components/form/inputNumberComponent";
 import SubmitButton from "@/app/components/form/submitButton";
 import { uploadImageToStorage } from "@/app/lib/firebase/service";
 import { Slugify } from "@/app/lib/helper";
-import { useState, useRef, createRef } from "react";
+import { FieldValue } from "firebase/firestore";
+import { useState, useRef } from "react";
 import Swal from "sweetalert2";
 
 export default function TambahProdukPage() {
