@@ -1,5 +1,6 @@
 import { getDataProduk } from "@/app/services/products";
-import Productcard from "../card/Productcard";
+import Productcard from "../card/InfoCard";
+import ProductCart from "../card/ProductCart";
 
 export default async function ProductCollection(props) {
   const limit = props.limit;
@@ -23,7 +24,8 @@ export default async function ProductCollection(props) {
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {data.map((item, index) => {
             if (index < limit) {
-              return <Productcard key={item.id} data={item} />;
+              // return <Productcard key={item.id} data={item} />;
+              return <ProductCart key={item.id} data={item} />;
             }
           })}
         </ul>

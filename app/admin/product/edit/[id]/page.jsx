@@ -11,6 +11,7 @@ import { storage } from "@/app/lib/firebase/init";
 import { deleteObject, ref } from "firebase/storage";
 import { ShowToast } from "@/app/lib/utils/successalert";
 import { uploadImageToStorage } from "@/app/lib/firebase/service";
+import Swal from "sweetalert2";
 
 export default function EditProductPage(props) {
   const { params } = props;
@@ -246,6 +247,7 @@ export default function EditProductPage(props) {
                   className="rounded-lg block shadow-md"
                 />
                 <button
+                  type="button"
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2"
                   onClick={() => handleDeleteImage(index, item.ref)}
                 >

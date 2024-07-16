@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Banner() {
   return (
     <div className="h-screen m-2 bg-gray-100 flex justify-center items-center">
@@ -13,8 +15,11 @@ export default function Banner() {
           Shop Now
         </button>
       </div>
-      <img
-        src="computer-banner.jpg"
+      <Image
+        width={100}
+        height={100}
+        quality="100%"
+        src="/banner.png"
         alt="Computer Banner"
         className="hidden md:block w-1/2 h-64 object-cover rounded"
       />
