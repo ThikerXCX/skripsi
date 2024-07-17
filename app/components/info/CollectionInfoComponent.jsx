@@ -1,5 +1,4 @@
 import { getDataInfo } from "@/app/services/info";
-import InfoCard from "../card/InfoCard";
 import InfoCardSquare from "../card/InfoCardSquare";
 
 export default async function CollectionInfoComponent(props) {

@@ -43,7 +43,7 @@ export default function NavbarUser() {
                   className={`text-gray-500 transition hover:text-gray-500/75 ${
                     pathName.startsWith("/produk") ? "text-gray-700" : ""
                   } `}
-                  href="/produk"
+                  href="/product"
                 >
                   Produk
                 </Link>
@@ -65,7 +65,7 @@ export default function NavbarUser() {
                   } `}
                   href="/tentang"
                 >
-                  Tentang Saya
+                  Tentang Kami
                 </Link>
               </li>
             </ul>
@@ -118,7 +118,7 @@ export default function NavbarUser() {
                         <div className="p-2">
                           <button
                             onClick={() => {
-                              signOut;
+                              signOut();
                             }}
                             className="block w-full rounded-lg px-4 py-2 text-sm  bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75"
                             role="menuitem"

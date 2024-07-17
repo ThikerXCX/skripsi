@@ -124,3 +124,16 @@ export async function tambahData(collectionName, data) {
     };
   }
 }
+
+export async function retriveDataBySlug(collectionName, slug) {
+  const q = query(
+    collection(firestore, collectionName),
+    where("slug", "==", slug)
+  );
+  const snapShot = await getDocs(q);
+  const data = snapShot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data[0]; // return the first matching document
+}
