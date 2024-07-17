@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-import SVGComponent from "../logo/SVGComponent";
 
 export default function NavbarUser() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -56,6 +55,16 @@ export default function NavbarUser() {
                   href="/info"
                 >
                   Info & Tips
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className={`text-gray-500 transition hover:text-gray-500/75 ${
+                    pathName.startsWith("/service") ? "text-gray-700" : ""
+                  } `}
+                  href="/service"
+                >
+                  Service
                 </Link>
               </li>
               <li>

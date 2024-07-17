@@ -13,7 +13,7 @@ export default function InfoCardSquare(props) {
       />
 
       <div className="bg-white p-4 sm:p-6">
-        <Link href={`/info/${data.slug}`}>
+        <Link href={`/info/detail/${data.slug}`}>
           <h3 className="mt-0.5 text-lg text-gray-900">{data.name}</h3>
         </Link>
 

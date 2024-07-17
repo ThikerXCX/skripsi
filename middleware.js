@@ -16,8 +16,8 @@ export default withAuth(mainMiddleware, [
   "/admin/product",
   "/admin/product/create",
   "/admin/product/edit",
-  "/laporan",
-  "/service",
+  "/admin/laporan",
+  "/admin/service",
   "/login",
   "/register",
 ]);

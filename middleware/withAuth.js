@@ -12,8 +12,8 @@ const onlyAdmin = [
   "/admin/product",
   "/admin/product/create",
   "/admin/product/edit",
-  "/laporan",
-  "/service",
+  "/admin/laporan",
+  "/admin/service",
 ];
 const authPage = ["/login", "/register"];
 
