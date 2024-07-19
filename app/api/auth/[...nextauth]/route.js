@@ -27,7 +27,6 @@ const authOptions = {
         const { email, password } = credentials;
 
         const user = await login({ email });
-        console.log(user);
         if (user) {
           const passwordConfirm = await compare(password, user.password);
           if (passwordConfirm) {
@@ -41,7 +40,7 @@ const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account, profile, user }) {
+    async jwt({ token, account, profile, user, trigger, session }) {
       if (account?.provider === "credentials") {
         token.email = user.email;
         token.fullName = user.fullName;
@@ -49,6 +48,9 @@ const authOptions = {
         token.alamat = user.alamat;
         token.carts = user.carts;
         token.secretKey = user.secretKey;
+      }
+      if (trigger === "update") {
+        token.carts = session.carts;
       }
       return token;
     },

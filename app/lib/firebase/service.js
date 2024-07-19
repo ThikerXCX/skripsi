@@ -137,3 +137,51 @@ export async function retriveDataBySlug(collectionName, slug) {
   }));
   return data[0]; // return the first matching document
 }
+
+export async function updateCartUser(email, data) {
+  const usersRef = collection(firestore, "users");
+  const q = query(usersRef, where("email", "==", email));
+
+  try {
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      return {
+        status: "error",
+        message: "No matching documents found.",
+      };
+    }
+
+    const promises = querySnapshot.docs.map(async (doc) => {
+      try {
+        await updateDoc(doc.ref, {
+          carts: data,
+        });
+        return {
+          status: "success",
+          message: "Document successfully updated!",
+        };
+      } catch (error) {
+        console.error("Error updating document: ", error);
+        return {
+          status: "error",
+          message: "Error updating document.",
+        };
+      }
+    });
+
+    // Menunggu semua promises untuk selesai
+    await Promise.all(promises);
+
+    return {
+      status: "success",
+      message: "All documents updated successfully.",
+    };
+  } catch (error) {
+    console.error("Error getting documents: ", error);
+    return {
+      status: "error",
+      message: "Error getting documents.",
+    };
+  }
+}

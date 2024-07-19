@@ -55,17 +55,16 @@ export default function DetailProduct(props) {
           {status === "authenticated" ? (
             <div className="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
               <form className="flex" action="">
-                <label htmlFor="Quantity" className="sr-only">
-                  Quantity
-                </label>
-
                 <div className="flex items-center gap-1">
+                  <label htmlFor="Quantity" className="sr-only">
+                    Jumlah
+                  </label>
                   <input
                     type="number"
                     id="Quantity"
                     min={1}
                     max={data.stock}
-                    className="h-10 w-24 rounded border-gray-500 shadow-md outline-slate-600 text-center sm:text-sm"
+                    className="h-10 w-24 rounded border border-gray-500 shadow-md outline-slate-600 text-center sm:text-sm"
                   />
                 </div>
                 <button

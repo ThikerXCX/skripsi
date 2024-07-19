@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductCart from "../card/ProductCart";
 import { useSession } from "next-auth/react";
 import { ShowToast } from "@/app/lib/utils/successalert";
@@ -10,18 +10,19 @@ export default function ProductCollection(props) {
 
   const { data: session, status, update } = useSession();
   const [loading, setLoading] = useState(false);
-  const [carts, setCarts] = useState(session?.user?.carts || []);
+  const [carts, setCarts] = useState([]);
 
+  useEffect(() => {
+    if (session?.user) {
+      setCarts(session.user.carts);
+    }
+  }, [session]);
   let disabledCart = status === "authenticated" ? true : false;
 
-  function addCart(data, qty = 1) {
+  const addToSessionCart = async (data, qty = 1) => {
     if (qty > data.stock) {
-      ShowToast("error", "stock tidak mencukupi");
-      return;
+      return false;
     }
-
-    setLoading(true);
-
     let cart = {
       product_id: data.id,
       name: data.name,
@@ -37,20 +38,48 @@ export default function ProductCollection(props) {
       const currentQty = carts[existingCartIndex].qty;
       const newQty = currentQty + qty;
       if (newQty > data.stock) {
-        ShowToast("error", "stock tidak mencukupi");
-        setLoading(false);
-        return;
+        return false;
       }
       carts[existingCartIndex].qty = newQty;
     } else {
       carts.push(cart);
     }
 
-    update({ user: { ...session.user, carts: [...carts] } }); // Update the session object with the new carts array
-    setCarts([...carts]); // Update the state variable with the new carts array
-    ShowToast("success", "Berhasil ditambahkan ke keranjang");
-    setLoading(false);
-  }
+    setCarts([...carts]);
+
+    await update({
+      carts: carts,
+    });
+    return true; // Update the state variable with the new carts array
+  };
+
+  const addCart = async (data, qty) => {
+    setLoading(true);
+    const updatedCart = await addToSessionCart(data, qty);
+
+    if (updatedCart) {
+      const res = await fetch(`/api/user/cart`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: session.user.email,
+          carts: carts,
+        }),
+      });
+      if (res.status) {
+        ShowToast("success", "Berhasil ditambahkan ke keranjang");
+        setLoading(false);
+      } else {
+        ShowToast("error", "gagal dalam memasukan ke keranjang");
+        setLoading(false);
+      }
+    } else {
+      ShowToast("error", "stock tidak mencukupi");
+      setLoading(false);
+    }
+  };
 
   return (
     <section>
@@ -90,9 +119,8 @@ export default function ProductCollection(props) {
               })}
         </ul>
       </div>
-
-      {carts.map((item) => (
-        <div key={item.id}>
+      {session?.user.carts.map((item) => (
+        <div className="bg-white shadow-lg rounded-lg p-4 mb-4">
           <p>{item.name}</p>
           <p>{item.qty}</p>
         </div>

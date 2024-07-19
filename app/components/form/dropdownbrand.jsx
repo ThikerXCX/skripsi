@@ -50,4 +50,5 @@ const DropDownBrand = forwardRef((props, ref) => {
   );
 });
 
+DropDownBrand.displayName = "DropDownBrand";
 export default DropDownBrand;

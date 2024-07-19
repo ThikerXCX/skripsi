@@ -22,7 +22,7 @@ export default function EditBrandPage(props) {
         console.error("Error fetching data:", error);
       }
     })();
-  }, []);
+  }, [params.id]);
 
   const slugify = (e) => {
     setName(e.target.value);
