@@ -1,9 +1,10 @@
+"use client";
 import { formatRupiah } from "@/app/lib/helper";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
-export default function DetailProduct(props) {
+export default function DetailProduct({ data, addCart }) {
   const { status } = useSession();
-  const { data } = props;
   return (
     <>
       <div
@@ -42,7 +43,7 @@ export default function DetailProduct(props) {
               className="text-gray-700 sm:col-span-2"
             >
               <span itemProp="priceCurrency" content="IDR" />
-              <span itemProp="price">Rp. {formatRupiah(data.harga)}</span>
+              <span itemProp="price">{formatRupiah(data.harga)}</span>
             </dd>
           </div>
 
@@ -52,32 +53,26 @@ export default function DetailProduct(props) {
               <pre className="whitespace-pre-wrap">{data.spesifikasi}</pre>
             </dd>
           </div>
-          {status === "authenticated" ? (
-            <div className="grid grid-cols-1 gap-1 p-3 even:bg-gray-50 sm:grid-cols-3 sm:gap-4">
-              <form className="flex" action="">
-                <div className="flex items-center gap-1">
-                  <label htmlFor="Quantity" className="sr-only">
-                    Jumlah
-                  </label>
-                  <input
-                    type="number"
-                    id="Quantity"
-                    min={1}
-                    max={data.stock}
-                    className="h-10 w-24 rounded border border-gray-500 shadow-md outline-slate-600 text-center sm:text-sm"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="ml-4 px-4 py-2 rounded bg-sky-700 whitespace-nowrap hover:bg-sky-400 "
-                >
-                  Tambah Keranjang
-                </button>
-              </form>
-            </div>
-          ) : (
-            ""
-          )}
+          <div className="flex justify-center items-center">
+            {status === "authenticated" ? (
+              <button
+                type="button"
+                onClick={() => {
+                  addCart(data, 1);
+                }}
+                className="ml-4 px-4 py-2 w-1/2 text-center font-semibold rounded bg-yellow-500 whitespace-nowrap hover:bg-yellow-400 "
+              >
+                Tambah Keranjang
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                className="ml-4 w-1/2 text-center font-semibold px-4 py-2 rounded bg-yellow-500 whitespace-nowrap hover:bg-yellow-400 "
+              >
+                Login
+              </Link>
+            )}
+          </div>
         </dl>
       </div>
     </>

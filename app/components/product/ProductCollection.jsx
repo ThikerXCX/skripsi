@@ -119,12 +119,6 @@ export default function ProductCollection(props) {
               })}
         </ul>
       </div>
-      {session?.user.carts.map((item) => (
-        <div className="bg-white shadow-lg rounded-lg p-4 mb-4">
-          <p>{item.name}</p>
-          <p>{item.qty}</p>
-        </div>
-      ))}
     </section>
   );
 }

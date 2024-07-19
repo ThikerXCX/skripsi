@@ -15,6 +15,6 @@ export async function PUT(request) {
       success: true,
       data: res,
     },
-    200
+    { status: 200 }
   );
 }
