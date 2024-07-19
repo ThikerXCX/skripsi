@@ -4,12 +4,16 @@ import Link from "next/link";
 export default function InfoCardSquare(props) {
   const { data } = props;
   return (
-    <article className="overflow-hidden rounded-lg shadow transition hover:shadow-lg">
+    <article
+      key={data.id}
+      className="overflow-hidden rounded-lg shadow transition hover:shadow-lg"
+    >
       <Image
         src={data.image[0].url}
         className="h-56 w-full object-cover"
         height={500}
         width={500}
+        alt={data.name}
       />
 
       <div className="bg-white p-4 sm:p-6">

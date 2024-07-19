@@ -1,10 +1,8 @@
 import { formatRupiah } from "@/app/lib/helper";
 import { useSession } from "next-auth/react";
-import SubmitButton from "../form/submitButton";
 
 export default function DetailProduct(props) {
-  const { data: session, status } = useSession();
-  console.log(status);
+  const { status } = useSession();
   const { data } = props;
   return (
     <>

@@ -1,12 +1,11 @@
+"use client";
 import { formatRupiah } from "@/app/lib/helper";
 import Image from "next/image";
 import Link from "next/link";
-import AddToCard from "../form/AddToCard";
 
-export default function ProductCart(props) {
-  const { data } = props;
+export default function ProductCart({ data, addCart, loading, disabledCart }) {
   return (
-    <div itemScope itemType="http://schema.org/Product">
+    <div itemScope key={data.id} itemType="http://schema.org/Product">
       <Link
         href={`/product/${data.slug}`}
         className="group relative block overflow-hidden"
@@ -37,9 +36,19 @@ export default function ProductCart(props) {
           {formatRupiah(data.harga)}
         </p>
 
-        <div className="flex justify-between gap-4">
-          <AddToCard data={data} />
-        </div>
+        {disabledCart ? (
+          <div className="flex justify-between gap-4">
+            <button
+              onClick={() => addCart(data, 1)}
+              disabled={loading}
+              className="block w-full rounded bg-yellow-400 p-2 text-sm font-medium transition hover:scale-105"
+            >
+              Tambah Keranjang
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
