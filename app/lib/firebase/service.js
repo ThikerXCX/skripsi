@@ -185,3 +185,13 @@ export async function updateCartUser(email, data) {
     };
   }
 }
+
+export async function retriveProductUser() {
+  const q = query(collection(firestore, "products"), where("stock", "!=", "0"));
+  const snapShot = await getDocs(q);
+  const data = snapShot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data; // return the first matching document
+}

@@ -27,6 +27,7 @@ export default function ProductCollection(props) {
       product_id: data.id,
       name: data.name,
       price: data.harga,
+      berat: data.berat,
       qty: qty,
     };
 
