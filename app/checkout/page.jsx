@@ -1,164 +1,169 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import Footer from "../components/layouts/Footer";
+import TabelProduct from "../components/product/TabelProduct";
+import PenerimaForm from "../components/form/PenerimaForm";
 
 export default function CheckoutPage() {
   const { data: session } = useSession();
   const [provinsi, setProvinsi] = useState([]);
   const [kota, setKota] = useState([]);
-  const [ongkir, setOngkir] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [selectedProvinsi, setSelectedProvinsi] = useState(null);
-  const [selectedKota, setSelectedKota] = useState(null);
-  const [address, setAddress] = useState({
-    nama: "",
-    alamat: "",
-    provinsi: "",
-    kota: "",
-    kodePos: "",
-  });
+  const [penerima, setPenerima] = useState({});
+  const [carts, setCarts] = useState([]);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [kurir, setKurir] = useState("jne");
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`/api/rajaongkir/provinsi`);
-      const { data } = await res.json();
-      setProvinsi(data);
+      setLoading(true);
+      const resProvinsi = await fetch(`/api/rajaongkir/provinsi`);
+      const { data: provinsiData } = await resProvinsi.json();
+      setProvinsi(provinsiData);
+
+      if (session?.user) {
+        setCarts(session.user.carts);
+        setPenerima({
+          nama_penerima: session.user.fullName || "",
+          no_hp_penerima: session.user.no_hp || "",
+          alamat_lengkap: session.user.alamat.alamat_lengkap || "",
+          kota_id: session.user.alamat.kota_id || "",
+          provinsi_id: session.user.alamat.province_id || "",
+          kode_pos: session.user.alamat.kode_pos || "",
+        });
+
+        if (session.user.alamat.province_id) {
+          const resKota = await fetch(
+            `/api/rajaongkir/kota?provinsi=${session.user.alamat.province_id}`
+          );
+          const { data: kotaData } = await resKota.json();
+          setKota(kotaData);
+        }
+      }
+      setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [session]);
 
   const handleProvinsiChange = async (e) => {
-    setSelectedProvinsi(e.target.value);
-    const res = await fetch(`/api/rajaongkir/kota?id=${e.target.value}`);
-    const { data } = await res.json();
-    setKota(data);
+    const selectedProvinsi = e.target.value;
+    setPenerima((prevState) => ({
+      ...prevState,
+      provinsi_id: selectedProvinsi,
+      kota_id: "",
+    }));
+
+    const resKota = await fetch(`/api/rajaongkir/kota?id=${selectedProvinsi}`);
+    const { data: kotaData } = await resKota.json();
+    setKota(kotaData);
   };
 
-  const handleKotaChange = (e) => {
-    setSelectedKota(e.target.value);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setPenerima((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleAddressChange = (e) => {
-    setAddress({ ...address, [e.target.name]: e.target.value });
+  const validateInput = () => {
+    let newErrors = {};
+    if (!penerima.nama_penerima)
+      newErrors.nama_penerima = "Nama penerima harus diisi";
+    if (!penerima.no_hp_penerima)
+      newErrors.no_hp_penerima = "No HP penerima harus diisi";
+    if (!penerima.alamat_lengkap)
+      newErrors.alamat_lengkap = "Alamat lengkap harus diisi";
+    if (!penerima.provinsi_id) newErrors.provinsi_id = "Provinsi harus dipilih";
+    if (!penerima.kota_id) newErrors.kota_id = "Kota harus dipilih";
+    if (!penerima.kode_pos) newErrors.kode_pos = "Kode pos harus diisi";
+    if (!kurir) newErrors.kurir = "kuris harus di pilih";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const errors = {};
-    if (!address.nama) {
-      errors.nama = "Nama is required";
-    }
-    if (!address.alamat) {
-      errors.alamat = "Alamat is required";
-    }
-    if (!selectedProvinsi) {
-      errors.provinsi = "Provinsi is required";
-    }
-    if (!selectedKota) {
-      errors.kota = "Kota is required";
-    }
-    if (!address.kodePos) {
-      errors.kodePos = "Kode Pos is required";
-    }
-    setErrors(errors);
-    if (Object.keys(errors).length === 0) {
-      // Call API to process payment and update order status
-      console.log("Submit checkout form");
+  const totalHarga =
+    carts && carts.length > 0
+      ? carts.reduce((total, cart) => total + cart.harga * cart.qty, 0)
+      : 0;
+
+  const totalBerat =
+    carts && carts.length > 0
+      ? carts.reduce((total, cart) => total + cart.berat * cart.qty, 0)
+      : 0;
+
+  const handleCekOngkir = async () => {
+    if (validateInput()) {
+      const res = await fetch(`/api/rajaongkir/ongkir`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...penerima,
+          kurir: kurir,
+          berat: totalBerat,
+        }),
+      });
+
+      if (res.status === 200) {
+      }
     }
   };
 
   return (
-    <div className="container mx-auto p-4 pt-6 md:p-6 lg:p-12">
-      <h1 className="text-3xl font-bold mb-4">Checkout</h1>
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-        <label className="block mb-2">
-          Nama:
-          <input
-            type="text"
-            name="nama"
-            value={address.nama}
-            onChange={handleAddressChange}
-            className="w-full p-2 pl-10 text-sm text-gray-700"
-          />
-          {errors.nama && (
-            <div className="text-red-500 text-sm">{errors.nama}</div>
-          )}
-        </label>
-        <br />
-        <label className="block mb-2">
-          Alamat:
-          <input
-            type="text"
-            name="alamat"
-            value={address.alamat}
-            onChange={handleAddressChange}
-            className="w-full p-2 pl-10 text-sm text-gray-700"
-          />
-          {errors.alamat && (
-            <div className="text-red-500 text-sm">{errors.alamat}</div>
-          )}
-        </label>
-        <br />
-        <label className="block mb-2">
-          Provinsi:
-          <select
-            value={selectedProvinsi}
-            onChange={handleProvinsiChange}
-            className="w-full p-2 pl-10 text-sm text-gray-700"
-          >
-            <option value="">Select Provinsi</option>
-            {provinsi.map((item, index) => (
-              <option key={index} value={item.province_id}>
-                {item.province}
-              </option>
-            ))}
-          </select>
-          {errors.provinsi && (
-            <div className="text-red-500 text-sm">{errors.provinsi}</div>
-          )}
-        </label>
-        <br />
-        <label className="block mb-2">
-          Kota:
-          <select
-            value={selectedKota}
-            onChange={handleKotaChange}
-            className="w-full p-2 pl-10 text-sm text-gray-700"
-          >
-            <option value="">Select Kota</option>
-            {kota.map((item, index) => (
-              <option key={index} value={item.city_id}>
-                {item.city_name}
-              </option>
-            ))}
-          </select>
-          {errors.kota && (
-            <div className="text-red-500 text-sm">{errors.kota}</div>
-          )}
-        </label>
-        <br />
-        <label className="block mb-2">
-          Kode Pos:
-          <input
-            type="text"
-            name="kodePos"
-            value={address.kodePos}
-            onChange={handleAddressChange}
-            className="w-full p-2 pl-10 text-sm text-gray-700"
-          />
-          {errors.kodePos && (
-            <div className="text-red-500 text-sm">{errors.kodePos}</div>
-          )}
-        </label>
-        <br />
-        <button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Checkout
-        </button>
-      </form>
-    </div>
+    <>
+      <div className="container mx-auto p-8">
+        <h1 className="text-2xl font-bold mb-4">Checkout</h1>
+
+        {loading ? (
+          <div className="flex justify-center items-center">
+            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form>
+              <PenerimaForm
+                penerima={penerima}
+                errors={errors}
+                handleInputChange={handleInputChange}
+                handleProvinsiChange={handleProvinsiChange}
+                provinsi={provinsi}
+                kota={kota}
+                kurir={kurir}
+                setKurir={setKurir}
+              />
+              <button
+                onClick={handleCekOngkir}
+                type="button"
+                className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+              >
+                Cek Ongkir
+              </button>
+            </form>
+
+            <TabelProduct
+              carts={carts}
+              totalBerat={totalBerat}
+              totalHarga={totalHarga}
+            />
+          </div>
+        )}
+
+        <style jsx>{`
+          .loader {
+            border-top-color: #3498db;
+            animation: spin 1s infinite linear;
+          }
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
+      </div>
+      <Footer />
+    </>
   );
 }

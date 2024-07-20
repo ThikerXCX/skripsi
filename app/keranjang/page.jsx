@@ -79,7 +79,7 @@ export default function KeranjangPage() {
 
   const totalHarga =
     carts && carts.length > 0
-      ? carts.reduce((total, cart) => total + cart.price * cart.qty, 0)
+      ? carts.reduce((total, cart) => total + cart.harga * cart.qty, 0)
       : 0;
 
   return (
@@ -106,7 +106,7 @@ export default function KeranjangPage() {
                     {cart.name}
                   </Link>
                 </td>
-                <td className="px-4 py-2">{formatRupiah(cart.price)}</td>
+                <td className="px-4 py-2">{formatRupiah(cart.harga)}</td>
                 <td className="px-4 py-2">
                   <input
                     type="number"

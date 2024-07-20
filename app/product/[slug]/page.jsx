@@ -43,7 +43,8 @@ export default function DetailProductPage(props) {
     let cart = {
       product_id: data.id,
       name: data.name,
-      price: data.harga,
+      harga: data.harga,
+      berat: data.berat,
       qty: qty,
     };
 

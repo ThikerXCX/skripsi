@@ -47,6 +47,7 @@ const authOptions = {
         token.role = user.role;
         token.alamat = user.alamat;
         token.carts = user.carts;
+        token.no_hp = user.no_hp;
         token.secretKey = user.secretKey;
       }
       if (trigger === "update") {
@@ -69,6 +70,9 @@ const authOptions = {
       }
       if ("carts" in token) {
         session.user.carts = token.carts;
+      }
+      if ("no_hp" in token) {
+        session.user.no_hp = token.no_hp;
       }
       if ("secretkey" in token) {
         session.user.secretkey = token.secretkey;
