@@ -5,6 +5,7 @@ import Footer from "../components/layouts/Footer";
 import TabelProduct from "../components/product/TabelProduct";
 import PenerimaForm from "../components/form/PenerimaForm";
 import { ShowToast } from "../lib/utils/successalert";
+import Script from "next/script";
 
 export default function CheckoutPage() {
   const { data: session } = useSession();
@@ -136,14 +137,35 @@ export default function CheckoutPage() {
   const handlePayment = async (e) => {
     e.preventDefault();
     if (validateInput) {
-      alert("berhasil");
-    } else {
-      alert("gagal");
+      try {
+        const response = await fetch(`/api/midtrans`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            gross_amount: totalHarga + selectedOngkir.cost[0].value,
+            ...penerima,
+            ongkir: selectedOngkir,
+            item_details: carts,
+
+            email: session?.user.email,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+        }
+      } catch (e) {}
     }
   };
-
   return (
     <>
+      <Script
+        src="https://app.stg.midtrans.com/snap/snap.js"
+        data-client-key={process.env.MIDTRANS_CLIENT_KEY}
+        strategy="lazyOnload"
+      />
       <div className="container mx-auto p-8">
         <h1 className="text-2xl font-bold mb-4">Checkout</h1>
 
@@ -177,6 +199,7 @@ export default function CheckoutPage() {
 
             <TabelProduct
               carts={carts}
+              errors={errors}
               totalBerat={totalBerat}
               totalHarga={totalHarga}
               ongkir={ongkir}
