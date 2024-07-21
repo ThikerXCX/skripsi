@@ -91,8 +91,9 @@ export default function CheckoutPage() {
     if (!penerima.provinsi_id) newErrors.provinsi_id = "Provinsi harus dipilih";
     if (!penerima.kota_id) newErrors.kota_id = "Kota harus dipilih";
     if (!penerima.kode_pos) newErrors.kode_pos = "Kode pos harus diisi";
-    if (!kurir) newErrors.kurir = "kuris harus di pilih";
-    if (!selectedOngkir) newErrors.selectedOngkir = "kuris harus di pilih";
+    if (!kurir) newErrors.kurir = "kurir harus di pilih";
+    if (!selectedOngkir)
+      newErrors.selectedOngkir = "Pengiriman Paket harus dipilih";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -136,34 +137,42 @@ export default function CheckoutPage() {
 
   const handlePayment = async (e) => {
     e.preventDefault();
-    if (validateInput) {
-      try {
-        const response = await fetch(`/api/midtrans`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            gross_amount: totalHarga + selectedOngkir.cost[0].value,
-            ...penerima,
-            ongkir: selectedOngkir,
-            item_details: carts,
+    if (!validateInput()) {
+      return; // or display an error message
+    }
 
-            email: session?.user.email,
-          }),
-        });
+    try {
+      const response = await fetch(`/api/midtrans`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          gross_amount: totalHarga + selectedOngkir.cost[0].value,
+          ...penerima,
+          ongkir: selectedOngkir,
+          item_details: carts,
 
-        if (response.ok) {
-          const data = await response.json();
-        }
-      } catch (e) {}
+          email: session?.user.email,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        window.snap.pay(data.token);
+      } else {
+        ShowToast("error", "Payment failed");
+      }
+    } catch (e) {
+      console.error(e);
+      ShowToast("error", e.message);
     }
   };
   return (
     <>
       <Script
-        src="https://app.stg.midtrans.com/snap/snap.js"
-        data-client-key={process.env.MIDTRANS_CLIENT_KEY}
+        src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="SB-Mid-client-amBwa0Zs7RgOiSgp"
         strategy="lazyOnload"
       />
       <div className="container mx-auto p-8">

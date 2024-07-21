@@ -10,7 +10,6 @@ export default function TabelProduct({
   setSelectedOngkir,
   errors,
 }) {
-  console.log(errors);
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">Detail Produk</h2>
@@ -48,15 +47,16 @@ export default function TabelProduct({
           </tr>
         </tfoot>
       </table>
-      {errors.selectedOngkir && (
-        <p className="text-red-500 text-sm">{errors.selectedOngkir}</p>
-      )}
+
       {ongkir && ongkir.length > 0 && (
         <CardOngkir
           ongkir={ongkir}
           selectedOngkir={selectedOngkir}
           setSelectedOngkir={setSelectedOngkir}
         />
+      )}
+      {errors.selectedOngkir && (
+        <p className="text-red-500 text-sm">{errors.selectedOngkir}</p>
       )}
       {selectedOngkir.length > 0 && (
         <table className="w-full table-auto bg-white rounded-lg shadow overflow-hidden">

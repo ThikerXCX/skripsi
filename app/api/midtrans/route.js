@@ -6,6 +6,7 @@ const Midtrans = require("midtrans-client");
 const snap = new Midtrans.Snap({
   isProduction: false,
   serverKey: process.env.MIDTRANS_SERVER_KEY,
+  clientKey: process.env.MIDTRANS_CLIENT_KEY,
 });
 
 export async function POST(request) {
@@ -53,6 +54,7 @@ export async function POST(request) {
   };
   try {
     const transaction = await snap.createTransaction(parameter);
+    console.log(transaction);
     const token = transaction.token;
     const redirectUrl = transaction.redirect_url;
     return NextResponse.json({
