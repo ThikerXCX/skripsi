@@ -2,7 +2,11 @@ export async function getKota(id) {
   try {
     const response = await fetch(
       `https://api.rajaongkir.com/starter/city?province=${id}`,
+
       {
+        next: {
+          revalidate: 3600 * 24,
+        },
         method: "GET",
         headers: {
           key: process.env.RAJA_ONGKIR_KEY,

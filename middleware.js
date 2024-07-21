@@ -20,4 +20,6 @@ export default withAuth(mainMiddleware, [
   "/admin/service",
   "/login",
   "/register",
+  "/keranjang",
+  "/checkout",
 ]);

@@ -1,6 +1,14 @@
 import { formatRupiah } from "@/app/lib/helper";
+import CardOngkir from "../form/CardOngkir";
 
-export default function TabelProduct({ carts, totalBerat, totalHarga }) {
+export default function TabelProduct({
+  carts,
+  totalBerat,
+  totalHarga,
+  ongkir,
+  selectedOngkir,
+  setSelectedOngkir,
+}) {
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">Detail Produk</h2>
@@ -38,6 +46,25 @@ export default function TabelProduct({ carts, totalBerat, totalHarga }) {
           </tr>
         </tfoot>
       </table>
+      {ongkir && ongkir.length > 0 && (
+        <CardOngkir
+          ongkir={ongkir}
+          selectedOngkir={selectedOngkir}
+          setSelectedOngkir={setSelectedOngkir}
+        />
+      )}
+      {selectedOngkir.length > 0 && (
+        <table className="w-full table-auto bg-white rounded-lg shadow overflow-hidden">
+          <tfoot>
+            <tr className="bg-gray-200 text-center text-gray-700">
+              <td className="px-4 py-2 text-right font-bold">
+                Total biaya :{" "}
+                {formatRupiah(totalHarga + selectedOngkir.cost[0].value)}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      )}
     </div>
   );
 }

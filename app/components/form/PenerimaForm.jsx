@@ -114,7 +114,6 @@ export default function PenerimaForm({
             errors.kota_id ? "border-red-500" : ""
           }`}
         >
-          <option value="">Pilih Kota</option>
           {kota.map((kotaItem) => (
             <option key={kotaItem.city_id} value={kotaItem.city_id}>
               {kotaItem.city_name}

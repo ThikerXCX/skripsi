@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Footer from "../components/layouts/Footer";
 import TabelProduct from "../components/product/TabelProduct";
 import PenerimaForm from "../components/form/PenerimaForm";
+import { ShowToast } from "../lib/utils/successalert";
 
 export default function CheckoutPage() {
   const { data: session } = useSession();
@@ -14,6 +15,9 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [kurir, setKurir] = useState("jne");
+  const [ongkir, setOngkir] = useState();
+  const [disabledButtonOngkir, setDisabledButtonOngkir] = useState(false);
+  const [selectedOngkir, setSelectedOngkir] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +39,7 @@ export default function CheckoutPage() {
 
         if (session.user.alamat.province_id) {
           const resKota = await fetch(
-            `/api/rajaongkir/kota?provinsi=${session.user.alamat.province_id}`
+            `/api/rajaongkir/kota?id=${session.user.alamat.province_id}`
           );
           const { data: kotaData } = await resKota.json();
           setKota(kotaData);
@@ -64,6 +68,17 @@ export default function CheckoutPage() {
     setPenerima((prevState) => ({ ...prevState, [name]: value }));
   };
 
+  const validateInputOngkir = () => {
+    let newErrors = {};
+    if (!penerima.alamat_lengkap)
+      newErrors.alamat_lengkap = "Alamat lengkap harus diisi";
+    if (!penerima.provinsi_id) newErrors.provinsi_id = "Provinsi harus dipilih";
+    if (!penerima.kota_id) newErrors.kota_id = "Kota harus dipilih";
+    if (!penerima.kode_pos) newErrors.kode_pos = "Kode pos harus diisi";
+    if (!kurir) newErrors.kurir = "kuris harus di pilih";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
   const validateInput = () => {
     let newErrors = {};
     if (!penerima.nama_penerima)
@@ -76,6 +91,7 @@ export default function CheckoutPage() {
     if (!penerima.kota_id) newErrors.kota_id = "Kota harus dipilih";
     if (!penerima.kode_pos) newErrors.kode_pos = "Kode pos harus diisi";
     if (!kurir) newErrors.kurir = "kuris harus di pilih";
+    if (!selectedOngkir) newErrors.selectedOngkir = "kuris harus di pilih";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -91,7 +107,8 @@ export default function CheckoutPage() {
       : 0;
 
   const handleCekOngkir = async () => {
-    if (validateInput()) {
+    if (validateInputOngkir()) {
+      setDisabledButtonOngkir(true);
       const res = await fetch(`/api/rajaongkir/ongkir`, {
         method: "POST",
         headers: {
@@ -105,7 +122,23 @@ export default function CheckoutPage() {
       });
 
       if (res.status === 200) {
+        const { data } = await res.json();
+        setOngkir(data);
+        setDisabledButtonOngkir(false);
+      } else {
+        ShowToast("error", "gagal mendapatkan ongkir");
+        setDisabledButtonOngkir(false);
       }
+    }
+    setDisabledButtonOngkir(false);
+  };
+
+  const handlePayment = async (e) => {
+    e.preventDefault();
+    if (validateInput) {
+      alert("berhasil");
+    } else {
+      alert("gagal");
     }
   };
 
@@ -120,7 +153,7 @@ export default function CheckoutPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <form>
+            <form onSubmit={handlePayment}>
               <PenerimaForm
                 penerima={penerima}
                 errors={errors}
@@ -133,17 +166,22 @@ export default function CheckoutPage() {
               />
               <button
                 onClick={handleCekOngkir}
+                disabled={disabledButtonOngkir}
                 type="button"
                 className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
               >
-                Cek Ongkir
+                {disabledButtonOngkir ? "..loading" : "Cek Ongkir"}
               </button>
+              <button type="submit">Bayar</button>
             </form>
 
             <TabelProduct
               carts={carts}
               totalBerat={totalBerat}
               totalHarga={totalHarga}
+              ongkir={ongkir}
+              selectedOngkir={selectedOngkir}
+              setSelectedOngkir={setSelectedOngkir}
             />
           </div>
         )}
