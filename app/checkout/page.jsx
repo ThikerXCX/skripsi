@@ -6,9 +6,10 @@ import TabelProduct from "../components/product/TabelProduct";
 import PenerimaForm from "../components/form/PenerimaForm";
 import { ShowToast } from "../lib/utils/successalert";
 import Script from "next/script";
+import { v4 } from "uuid";
 
 export default function CheckoutPage() {
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [provinsi, setProvinsi] = useState([]);
   const [kota, setKota] = useState([]);
   const [penerima, setPenerima] = useState({});
@@ -135,36 +136,75 @@ export default function CheckoutPage() {
     setDisabledButtonOngkir(false);
   };
 
+  const getTransaction = async (order_id) => {
+    const response = await fetch(`/api/midtrans`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        order_id: order_id,
+        gross_amount: totalHarga + selectedOngkir.cost[0].value,
+        ...penerima,
+        ongkir: selectedOngkir,
+        item_details: carts,
+        email: session?.user.email,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    }
+    return;
+  };
+
   const handlePayment = async (e) => {
     e.preventDefault();
     if (!validateInput()) {
       return; // or display an error message
     }
+    const order_id = `EC-${v4()}`;
 
     try {
-      const response = await fetch(`/api/midtrans`, {
+      const { token, redirectUrl } = await getTransaction(order_id);
+
+      const res = await fetch(`/api/transaksi`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          gross_amount: totalHarga + selectedOngkir.cost[0].value,
-          ...penerima,
-          ongkir: selectedOngkir,
-          item_details: carts,
-
+          order_id: order_id,
+          penerima: penerima,
+          kurir: kurir,
           email: session?.user.email,
+          ongkir: selectedOngkir.cost[0].value,
+          total_harga: totalHarga,
+          item_details: carts,
+          total: totalHarga + selectedOngkir.cost[0].value,
+          token: token,
+          redirectUrl: redirectUrl,
         }),
       });
+      if (res.ok) {
+        await update({ carts: [] });
 
-      if (response.ok) {
-        const data = await response.json();
-        window.snap.pay(data.token);
-      } else {
-        ShowToast("error", "Payment failed");
+        const updateUser = await fetch(`/api/user/cart`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: session?.user.email,
+            carts: [],
+          }),
+        });
+        if (updateUser.ok) {
+          window.snap.pay(token);
+        }
       }
     } catch (e) {
-      console.error(e);
       ShowToast("error", e.message);
     }
   };
@@ -203,7 +243,12 @@ export default function CheckoutPage() {
               >
                 {disabledButtonOngkir ? "..loading" : "Cek Ongkir"}
               </button>
-              <button type="submit">Bayar</button>
+              <button
+                type="submit"
+                className="bg-yellow-500  ml-4 text-white px-4 py-2 rounded mt-4"
+              >
+                Bayar
+              </button>
             </form>
 
             <TabelProduct

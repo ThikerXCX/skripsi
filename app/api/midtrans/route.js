@@ -30,7 +30,7 @@ export async function POST(request) {
 
   const parameter = {
     transaction_details: {
-      order_id: `EC-${v4()}`,
+      order_id: req.order_id,
       gross_amount: req.gross_amount,
     },
     item_details: cartWithOngkir,
@@ -54,7 +54,6 @@ export async function POST(request) {
   };
   try {
     const transaction = await snap.createTransaction(parameter);
-    console.log(transaction);
     const token = transaction.token;
     const redirectUrl = transaction.redirect_url;
     return NextResponse.json({

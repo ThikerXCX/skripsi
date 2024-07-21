@@ -11,7 +11,6 @@ export async function getKota(id) {
         headers: {
           key: process.env.RAJA_ONGKIR_KEY,
         },
-        cache: "no-cache",
       }
     );
 

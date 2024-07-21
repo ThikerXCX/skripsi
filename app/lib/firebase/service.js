@@ -11,6 +11,7 @@ import {
   updateDoc,
   where,
   serverTimestamp,
+  setDoc,
 } from "firebase/firestore";
 import { app, storage } from "./init";
 import { v4 } from "uuid";
@@ -108,7 +109,6 @@ export async function updateFieldById(collectionName, id, data) {
 }
 
 export async function tambahData(collectionName, data) {
-  data.created_at = serverTimestamp();
   try {
     await addDoc(collection(firestore, collectionName), data);
     return {
@@ -194,4 +194,33 @@ export async function retriveProductUser() {
     ...doc.data(),
   }));
   return data; // return the first matching document
+}
+
+export async function retriveUserByEmail(email) {
+  const q = query(collection(firestore, "users"), where("email", "==", email));
+  const snapShot = await getDocs(q);
+  const data = snapShot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data[0]; // return the first matching document
+}
+
+export async function addDataWithCustomId(collectionName, id, data) {
+  data.created_at = serverTimestamp();
+
+  try {
+    await setDoc(doc(firestore, collectionName, id), data);
+    return {
+      status: true,
+      message: "Data berhasil ditambahkan",
+      statusCode: 200,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: "Data gagal ditambahkan",
+      statusCode: 400,
+    };
+  }
 }
