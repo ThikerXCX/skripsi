@@ -14,7 +14,7 @@ export default function ProductCollection(props) {
 
   useEffect(() => {
     if (session?.user) {
-      setCarts(session.user.carts);
+      setCarts(session?.user.carts || []);
     }
   }, [session]);
   let disabledCart = status === "authenticated" ? true : false;

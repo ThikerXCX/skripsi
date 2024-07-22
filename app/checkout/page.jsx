@@ -29,19 +29,19 @@ export default function CheckoutPage() {
       setProvinsi(provinsiData);
 
       if (session?.user) {
-        setCarts(session.user.carts);
+        setCarts(session?.user.carts || []);
         setPenerima({
-          nama_penerima: session.user.fullName || "",
-          no_hp_penerima: session.user.no_hp || "",
-          alamat_lengkap: session.user.alamat.alamat_lengkap || "",
-          kota_id: session.user.alamat.kota_id || "",
-          provinsi_id: session.user.alamat.province_id || "",
-          kode_pos: session.user.alamat.kode_pos || "",
+          nama_penerima: session?.user.fullName || "",
+          no_hp_penerima: session?.user.no_hp || "",
+          alamat_lengkap: session?.user.alamat.alamat_lengkap || "",
+          kota_id: session?.user.alamat.kota_id || "",
+          provinsi_id: session?.user.alamat.province_id || "",
+          kode_pos: session?.user.alamat.kode_pos || "",
         });
 
-        if (session.user.alamat.province_id) {
+        if (session?.user.alamat.province_id) {
           const resKota = await fetch(
-            `/api/rajaongkir/kota?id=${session.user.alamat.province_id}`
+            `/api/rajaongkir/kota?id=${session?.user.alamat.province_id}`
           );
           const { data: kotaData } = await resKota.json();
           setKota(kotaData);

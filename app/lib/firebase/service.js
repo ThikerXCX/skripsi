@@ -15,6 +15,8 @@ import {
 } from "firebase/firestore";
 import { app, storage } from "./init";
 import { v4 } from "uuid";
+// import bcrypt from "bcrypt";
+// const bcrypt = require("bcrypt");
 
 const firestore = getFirestore(app);
 
@@ -50,6 +52,7 @@ export async function retriveDataById(collectionName, id) {
 }
 
 export async function register(data) {
+  console.log(data);
   const q = query(
     collection(firestore, "users"),
     where("email", "==", data.email)
@@ -65,7 +68,7 @@ export async function register(data) {
     return {
       status: false,
       statusCode: 400,
-      message: "email udah ada guyszzz",
+      message: "email sudah Terdaftar",
     };
   } else {
     data.password = await bcrypt.hash(data.password, 10);
@@ -89,7 +92,6 @@ export async function login(data) {
     id: doc.id,
     ...doc.data(),
   }));
-  console.log(users);
 
   if (users) {
     return users[0];

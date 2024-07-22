@@ -30,7 +30,7 @@ export default function DetailProductPage(props) {
     }
 
     if (session?.user) {
-      setCarts(session.user.carts);
+      setCarts(session.user.carts || []);
     }
 
     getData();

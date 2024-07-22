@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { v4 } from "uuid";
 
 const Midtrans = require("midtrans-client");
 
@@ -39,17 +38,19 @@ export async function POST(request) {
       email: req.email,
       phone: req.no_hp_penerima,
       billing_address: {
+        first_name: req.nama_penerima,
+        email: req.email,
+        phone: req.no_hp_penerima,
         address: req.alamat_lengkap,
         postal_code: req.kode_pos,
       },
-    },
-    shipping_address: {
-      first_name: "EC Computer",
-      email: "rifkimuhammad967@gmail.com",
-      phone: "082255116296",
-      address: "EC Computer Jalan Imam Bonjol No.88",
-      city: "Pontianak",
-      postal_code: "78122",
+      shipping_address: {
+        first_name: req.nama_penerima,
+        email: req.email,
+        phone: req.no_hp_penerima,
+        address: req.alamat_lengkap,
+        postal_code: req.kode_pos,
+      },
     },
   };
   try {
