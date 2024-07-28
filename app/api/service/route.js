@@ -8,6 +8,7 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   try {
     const data = await req.json();
+    data.status = ["Barang Perbaikan Masuk"];
     const id = data.id;
 
     delete data.id;

@@ -1,11 +1,11 @@
 "use client";
-import { generateNoService, sendMessage } from "@/app/lib/helper";
-import { useState } from "react";
-import Swal from "sweetalert2";
+import { getDataById } from "@/app/services";
+import { useEffect, useState } from "react";
 
-const LaptopServiceForm = () => {
+export default function EditFormService(props) {
+  const { params } = props;
   const [formData, setFormData] = useState({
-    id: generateNoService(),
+    id: params.id,
     namaCustomer: "",
     noHpCustomer: "",
     namaPerangkat: "",
@@ -20,9 +20,14 @@ const LaptopServiceForm = () => {
     },
     keluhan: "",
   });
-
   const [errors, setErrors] = useState({});
-
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await getDataById(`/api/service?id=` + params.id);
+      setFormData(data);
+    };
+    fetchData();
+  }, [params.id]); // Dependensi pada params.id
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
@@ -47,7 +52,6 @@ const LaptopServiceForm = () => {
       });
     }
   };
-
   const validate = () => {
     let newErrors = {};
     if (!formData.id) newErrors.id = "No Service harus diisi";
@@ -64,34 +68,7 @@ const LaptopServiceForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    sendMessage(formData, "create");
-    if (validate()) {
-      const res = await fetch(`/api/service`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      const response = await res.json();
-      if (response.status) {
-        Swal.fire({
-          icon: "success",
-          title: "berhasil menambahkan service!",
-          showConfirmButton: false,
-          timer: 2000,
-        }).then(() => {
-          window.location.href = "/admin/service";
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Gagal",
-          text: "Gagal menambahkan service",
-          confirmButtonText: "OK",
-        });
-      }
-    }
   };
-
   return (
     <div className="max-w-4xl mx-auto p-8 bg-white shadow-md rounded-lg">
       <h2 className="text-3xl font-bold mb-8 text-center">
@@ -307,6 +284,4 @@ const LaptopServiceForm = () => {
       </form>
     </div>
   );
-};
-
-export default LaptopServiceForm;
+}

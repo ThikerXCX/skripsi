@@ -167,8 +167,13 @@ export const coloumsService = [
     ),
   },
   {
+    id: "confirm",
+    header: "Konfirmasi",
+    cell: ({ row }) => <ButtonService row={row} />,
+  },
+  {
     id: "actions",
     header: "aksi",
-    cell: ({ row }) => <ButtonService row={row} />,
+    cell: ({ row }) => <DropDownMenuAksi row={row} route="service" />,
   },
 ];
