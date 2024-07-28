@@ -2,6 +2,7 @@
 import { ArrowUpDown } from "lucide-react";
 import DropDownMenuAksi from "./DropDownMenuAksi";
 import { Button } from "@/components/ui/button";
+import ButtonService from "./ButtonService";
 
 export const columnsTransaksi = [
   {
@@ -136,5 +137,38 @@ export const columnsInfo = [
     id: "actions",
     header: "aksi",
     cell: ({ row }) => <DropDownMenuAksi row={row} route="info" />,
+  },
+];
+
+export const coloumsService = [
+  {
+    accessorKey: "id",
+    header: "No Service",
+  },
+  {
+    accessorKey: "namaCustomer",
+    header: "Nama Customer",
+  },
+  {
+    accessorKey: "namaPerangkat",
+    header: "Nama Perangkat",
+  },
+  {
+    accessorKey: "noHpCustomer",
+    header: "No HP",
+  },
+  {
+    accessorKey: "keluhan",
+    header: "Keluhan",
+    cell: ({ row }) => (
+      <div className="truncate whitespace-nowrap overflow-hidden ">
+        {row.getValue("keluhan")}
+      </div>
+    ),
+  },
+  {
+    id: "actions",
+    header: "aksi",
+    cell: ({ row }) => <ButtonService row={row} />,
   },
 ];
