@@ -1,5 +1,7 @@
 import {
   addDataWithCustomId,
+  retriveData,
+  retriveDataById,
   retriveUserByEmail,
 } from "@/app/lib/firebase/service";
 import { serverTimestamp } from "firebase/firestore";
@@ -29,4 +31,20 @@ export async function POST(request) {
 
   revalidateTag("transaksi");
   return NextResponse.json(res);
+}
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
+
+  if (id) {
+    const detailtransaksi = await retriveDataById("transaksi", id);
+    if (detailtransaksi) {
+      console.log(detailtransaksi);
+      return NextResponse.json({ status: 200, data: detailtransaksi });
+    }
+    return NextResponse.json({ status: 404, message: "data not found" });
+  }
+
+  const transaksi = await retriveData("transaksi");
+  return NextResponse.json({ status: 200, data: transaksi });
 }

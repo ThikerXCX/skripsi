@@ -226,3 +226,15 @@ export async function addDataWithCustomId(collectionName, id, data) {
     };
   }
 }
+export async function retriveDataLaporan() {
+  const q = query(
+    collection(firestore, "transaksi"),
+    where("status", "==", "settlement")
+  );
+  const snapShot = await getDocs(q);
+  const data = snapShot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data; // return the first matching document
+}

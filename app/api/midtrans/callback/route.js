@@ -43,6 +43,8 @@ export async function POST(request) {
           })
         );
         revalidateTag("products");
+        revalidateTag("transaksi");
+        revalidateTag("laporan");
         revalidateTag("productsUser");
       } catch (error) {
         console.error("Error updating stock:", error);
