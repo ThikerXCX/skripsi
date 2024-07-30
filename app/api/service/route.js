@@ -3,6 +3,7 @@ import {
   retriveData,
   retriveDataById,
 } from "@/app/lib/firebase/service";
+import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -14,6 +15,7 @@ export async function POST(req) {
     delete data.id;
 
     const res = await addDataWithCustomId("service", id, data);
+    revalidateTag("service");
     return NextResponse.json(res);
   } catch (error) {
     return NextResponse.json({

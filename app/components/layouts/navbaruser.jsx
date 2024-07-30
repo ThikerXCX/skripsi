@@ -77,6 +77,18 @@ export default function NavbarUser() {
                   Tentang Kami
                 </Link>
               </li>
+              {session?.user.role === "admin" ? (
+                <li>
+                  <Link
+                    className={`text-gray-500 transition hover:text-gray-500/75 `}
+                    href="/admin"
+                  >
+                    Masuk Admin
+                  </Link>
+                </li>
+              ) : (
+                ""
+              )}
             </ul>
           </nav>
 

@@ -15,11 +15,11 @@
 
 //   return NextResponse.json({
 //     User: getUser,
-//     Brand : getBrand,
-//     Kategori : getKategori,
-//     Products : getProducts,
+//     Brand: getBrand,
+//     Kategori: getKategori,
+//     Products: getProducts,
 //     Service: getService,
-//     Transaksi : getTransaksi,
+//     Transaksi: getTransaksi,
 //     Info: getInfo,
 //   });
 // }
