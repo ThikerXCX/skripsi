@@ -43,14 +43,38 @@ export async function retriveData(collectionName) {
 
   return data;
 }
-
 export async function retriveDataById(collectionName, id) {
   const snapShot = await getDoc(doc(firestore, collectionName, id));
   const data = snapShot.data();
   data.id = id;
   return data;
 }
+export async function deleteDocById(collectionName, id) {
+  const res = await deleteDoc(doc(firestore, collectionName, id));
+  return res;
+}
 
+export async function updateFieldById(collectionName, id, data) {
+  const res = await updateDoc(doc(firestore, collectionName, id), data);
+  return res;
+}
+
+export async function tambahData(collectionName, data) {
+  try {
+    await addDoc(collection(firestore, collectionName), data);
+    return {
+      status: true,
+      message: "Data berhasil ditambahkan",
+      statusCode: 200,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: "Data gagal ditambahkan",
+      statusCode: 400,
+    };
+  }
+}
 export async function register(data) {
   console.log(data);
   const q = query(
@@ -97,33 +121,6 @@ export async function login(data) {
     return users[0];
   } else {
     return null;
-  }
-}
-
-export async function deleteDocById(collectionName, id) {
-  const res = await deleteDoc(doc(firestore, collectionName, id));
-  return res;
-}
-
-export async function updateFieldById(collectionName, id, data) {
-  const res = await updateDoc(doc(firestore, collectionName, id), data);
-  return res;
-}
-
-export async function tambahData(collectionName, data) {
-  try {
-    await addDoc(collection(firestore, collectionName), data);
-    return {
-      status: true,
-      message: "Data berhasil ditambahkan",
-      statusCode: 200,
-    };
-  } catch (error) {
-    return {
-      status: false,
-      message: "Data gagal ditambahkan",
-      statusCode: 400,
-    };
   }
 }
 
