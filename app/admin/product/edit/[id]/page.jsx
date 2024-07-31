@@ -12,6 +12,7 @@ import { deleteObject, ref } from "firebase/storage";
 import { ShowToast } from "@/app/lib/utils/successalert";
 import { uploadImageToStorage } from "@/app/lib/firebase/service";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 export default function EditProductPage(props) {
   const { params } = props;
@@ -50,7 +51,7 @@ export default function EditProductPage(props) {
         console.error("Error fetching data:", error);
       }
     })();
-  }, []);
+  }, [params.id]);
 
   function updateSlug(e) {
     setSlug(Slugify(e.target.value));
@@ -239,10 +240,10 @@ export default function EditProductPage(props) {
                 key={item.id}
                 className="flex flex-col items-center mb-4 mr-4"
               >
-                <img
+                <Image
                   src={item.url}
-                  width="150px"
-                  height="150px"
+                  width={150}
+                  height={150}
                   alt={item.id}
                   className="rounded-lg block shadow-md"
                 />
@@ -278,10 +279,10 @@ export default function EditProductPage(props) {
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {imagePreviews.map((src, index) => (
                 <div key={index} className="relative">
-                  <img
+                  <Image
                     src={src}
-                    width="150px"
-                    height="150px"
+                    width={150}
+                    height={150}
                     alt={`Image Preview ${index + 1}`}
                     className="w-full h-auto rounded-lg shadow-md"
                   />

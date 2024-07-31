@@ -7,6 +7,7 @@ import { ConfirmAlert } from "@/app/lib/utils/confirmalert";
 import { ShowToast } from "@/app/lib/utils/successalert";
 import { getDataById } from "@/app/services";
 import { deleteObject, ref } from "firebase/storage";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function EditInfoPage(props) {
@@ -49,14 +50,13 @@ export default function EditInfoPage(props) {
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await getDataById("/api/info?id=" + params.id);
-      console.log(data);
       setName(data.name);
       setSlug(data.slug);
       setDeskripsi(data.deskripsi);
       setImage(data.image);
     };
     fetchData();
-  }, []);
+  }, [params.id]);
 
   function getSlug(e) {
     setSlug(Slugify(e.target.value));
@@ -183,10 +183,10 @@ export default function EditInfoPage(props) {
                 key={item.ref}
                 className="flex flex-col items-center mb-4 mr-4"
               >
-                <img
+                <Image
                   src={item.url}
-                  width="150px"
-                  height="150px"
+                  width={150}
+                  height={150}
                   alt={item.ref}
                   className="rounded-lg block shadow-md"
                 />
@@ -220,10 +220,10 @@ export default function EditInfoPage(props) {
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {imagePreviews.map((src, index) => (
                 <div key={index} className="relative">
-                  <img
+                  <Image
                     src={src}
-                    width="150px"
-                    height="150px"
+                    width={150}
+                    height={150}
                     alt={`Image Preview ${index + 1}`}
                     className="w-full h-auto rounded-lg shadow-md"
                   />

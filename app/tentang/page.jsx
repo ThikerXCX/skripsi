@@ -17,13 +17,6 @@ export default function TentangKamiPage() {
           alt="halaman ec"
         />
         <div className="w-full md:w-1/2 xl:w-1/3 p-4">
-          {/* <Image
-            src="/icon/EC.png"
-            width={1000}
-            height={1000}
-            alt="EC Computer Logo"
-            className="w-full h-24 object-contain mb-4"
-          /> */}
           <h2 className="text-2xl font-bold mb-2">Misi Kami</h2>
           <p className="text-lg">
             Misi kami adalah untuk menjadi toko online laptop yang paling
@@ -31,11 +24,6 @@ export default function TentangKamiPage() {
           </p>
         </div>
         <div className="w-full md:w-1/2 xl:w-1/3 p-4">
-          {/* <img
-            src="/team-ec-computer.jpg"
-            alt="EC Computer Team"
-            className="w-full h-24 object-cover mb-4"
-          /> */}
           <h2 className="text-2xl font-bold mb-2">Tim Kami</h2>
           <p className="text-lg">
             Tim kami terdiri dari orang-orang yang berpengalaman dan berdedikasi

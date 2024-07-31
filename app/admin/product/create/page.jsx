@@ -7,6 +7,7 @@ import SubmitButton from "@/app/components/form/submitButton";
 import { uploadImageToStorage } from "@/app/lib/firebase/service";
 import { Slugify } from "@/app/lib/helper";
 import { FieldValue } from "firebase/firestore";
+import Image from "next/image";
 import { useState, useRef } from "react";
 import Swal from "sweetalert2";
 
@@ -194,10 +195,10 @@ export default function TambahProdukPage() {
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {imagePreviews.map((src, index) => (
                 <div key={index} className="relative">
-                  <img
+                  <Image
                     src={src}
-                    width="150px"
-                    height="150px"
+                    width={150}
+                    height={150}
                     alt={`Image Preview ${index + 1}`}
                     className="w-full h-auto rounded-lg shadow-md"
                   />

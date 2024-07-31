@@ -12,6 +12,7 @@ export async function POST(req) {
   try {
     const data = await req.json();
     data.status = ["Barang Perbaikan Masuk"];
+    data.statusCode = 1;
     const id = data.id;
 
     delete data.id;
