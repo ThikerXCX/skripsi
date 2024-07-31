@@ -3,15 +3,9 @@ import { formatRupiah } from "@/app/lib/helper";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ProductCart({
-  key,
-  data,
-  addCart,
-  loading,
-  disabledCart,
-}) {
+export default function ProductCart({ data, addCart, loading, disabledCart }) {
   return (
-    <div itemScope key={key} itemType="http://schema.org/Product">
+    <div itemScope key={data.id} itemType="http://schema.org/Product">
       <Link
         href={`/product/${data.slug}`}
         className="group relative block overflow-hidden"

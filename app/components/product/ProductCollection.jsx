@@ -93,31 +93,24 @@ export default function ProductCollection(props) {
 
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {limit
-            ? data.map((item, index) => {
-                if (index < limit) {
-                  // return <Productcard key={item.id} data={item} />;
-                  return (
-                    <ProductCart
-                      key={index}
-                      data={item}
-                      disabledCart={disabledCart}
-                      loading={loading}
-                      addCart={addCart}
-                    />
-                  );
-                }
-              })
-            : data.map((item, index) => {
-                return (
-                  <ProductCart
-                    key={index}
-                    data={item}
-                    disabledCart={disabledCart}
-                    loading={loading}
-                    addCart={addCart}
-                  />
-                );
-              })}
+            ? data.map((item) => (
+                <ProductCart
+                  key={item.id} // Use the item's id as the key prop
+                  data={item}
+                  disabledCart={disabledCart}
+                  loading={loading}
+                  addCart={addCart}
+                />
+              ))
+            : data.map((item) => (
+                <ProductCart
+                  key={item.id} // Use the item's id as the key prop
+                  data={item}
+                  disabledCart={disabledCart}
+                  loading={loading}
+                  addCart={addCart}
+                />
+              ))}
         </ul>
       </div>
     </section>
