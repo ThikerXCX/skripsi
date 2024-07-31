@@ -83,7 +83,7 @@ export default function NavbarAdmin() {
           </li>
           <li>
             <Link
-              href="/admin/info"
+              href="/admin/laporan"
               className={`${
                 pathName === "/admin/laporan" ? "bg-slate-300" : ""
               } block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-300 `}
@@ -93,7 +93,7 @@ export default function NavbarAdmin() {
           </li>
           <li>
             <Link
-              href="/admin/info"
+              href="/admin/transaksi"
               className={`${
                 pathName === "/admin/transaksi" ? "bg-slate-300" : ""
               } block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-300 `}

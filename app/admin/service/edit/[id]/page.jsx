@@ -1,6 +1,7 @@
 "use client";
 import { getDataById } from "@/app/services";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 export default function EditFormService(props) {
   const { params } = props;
@@ -68,6 +69,33 @@ export default function EditFormService(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (validate()) {
+      const res = await fetch(`/api/service`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const response = await res.json();
+      if (response.status) {
+        Swal.fire({
+          icon: "success",
+          title: "berhasil diupdate!",
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => {
+          window.location.href = "/admin/service";
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal",
+          text: "Gagal update service",
+          confirmButtonText: "OK",
+        });
+      }
+    }
   };
   return (
     <div className="max-w-4xl mx-auto p-8 bg-white shadow-md rounded-lg">
