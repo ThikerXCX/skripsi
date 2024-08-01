@@ -3,10 +3,10 @@ import { DataTable } from "@/app/components/table/DataTable";
 import { getDataKategori } from "@/app/services/kategori";
 import Link from "next/link";
 
-export default async function KategoriPage() {
+export const dynamic = "force-dynamic";
 
-  
-  const {data} = await getDataKategori(`${process.env.HOSTNAME}api/kategori`);
+export default async function KategoriPage() {
+  const { data } = await getDataKategori(`${process.env.HOSTNAME}api/kategori`);
 
   return (
     <div className="w-full p-4 bg-slate-200 rounded-md h-screen">

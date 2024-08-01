@@ -3,6 +3,8 @@ import { DataTableProduct } from "@/app/components/table/DataTable";
 import { getDataInfo } from "@/app/services/info";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function InfoPage() {
   const { data } = await getDataInfo(`${process.env.HOSTNAME}api/info`);
   return (

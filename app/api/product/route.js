@@ -59,7 +59,6 @@ export async function GET(request) {
   }
 
   const products = await retriveData("products");
-  console.log(products);
   return NextResponse.json({ status: 200, data: products });
 }
 

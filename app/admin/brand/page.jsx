@@ -3,6 +3,8 @@ import { DataTableProduct } from "@/app/components/table/DataTable";
 import { getDataBrand } from "@/app/services/brand";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function BrandPage() {
   const { data } = await getDataBrand(`${process.env.HOSTNAME}api/brand`);
 

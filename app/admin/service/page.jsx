@@ -3,6 +3,8 @@ import { DataTableService } from "@/app/components/table/DataTable";
 import { getDataService } from "@/app/services/service";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function ServicePage() {
   const { data } = await getDataService(`${process.env.HOSTNAME}api/service`);
   return (

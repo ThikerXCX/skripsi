@@ -4,8 +4,10 @@ import Footer from "./components/layouts/Footer";
 import ProductCollection from "./components/product/ProductCollection";
 import { getDataProduk } from "./services/products";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
-  const { data } = await getDataProduk(`${process.env.HOSTNAME}api/product`);
+  const { data } = await getDataProduk(`/api/product`);
   return (
     <>
       <Banner />
