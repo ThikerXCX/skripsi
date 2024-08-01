@@ -7,7 +7,7 @@ import { getDataProduk } from "./services/products";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const { data } = await getDataProduk(`/api/product`);
+  const { data } = await getDataProduk(`${process.env.HOSTNAME}api/product`);
   return (
     <>
       <Banner />
