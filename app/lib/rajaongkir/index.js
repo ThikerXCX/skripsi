@@ -4,10 +4,7 @@ export async function getKota(id) {
       `https://api.rajaongkir.com/starter/city?province=${id}`,
 
       {
-        next: {
-          revalidate: 3600 * 24,
-        },
-        method: "GET",
+        cache: "no-store",
         headers: {
           key: process.env.NEXT_PUBLIC_RAJA_ONGKIR_KEY,
         },
