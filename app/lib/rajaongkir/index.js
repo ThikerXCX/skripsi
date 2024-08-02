@@ -33,7 +33,7 @@ export async function getProvinsi() {
       {
         method: "GET",
         headers: {
-          key: process.env.NEXT_PUBLIC_RAJA_ONGKIR_KEYRAJA_ONGKIR_KEY,
+          key: process.env.NEXT_PUBLIC_RAJA_ONGKIR_KEY,
         },
         cache: "force-cache",
         next: {
