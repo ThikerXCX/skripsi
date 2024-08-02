@@ -60,7 +60,9 @@ export default function CheckoutPage() {
       kota_id: "",
     }));
 
-    const resKota = await fetch(`/api/rajaongkir/kota?id=${selectedProvinsi}`);
+    const resKota = await fetch(
+      `${process.env.HOSTNAME}api/rajaongkir/kota?id=${selectedProvinsi}`
+    );
     const { data: kotaData } = await resKota.json();
     setKota(kotaData);
   };
@@ -112,7 +114,7 @@ export default function CheckoutPage() {
   const handleCekOngkir = async () => {
     if (validateInputOngkir()) {
       setDisabledButtonOngkir(true);
-      const res = await fetch(`/api/rajaongkir/ongkir`, {
+      const res = await fetch(`${process.env.HOSTNAME}api/rajaongkir/ongkir`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -137,7 +139,7 @@ export default function CheckoutPage() {
   };
 
   const getTransaction = async (order_id) => {
-    const response = await fetch(`${process.env.HOSTNAME}/api/midtrans`, {
+    const response = await fetch(`${process.env.HOSTNAME}api/midtrans`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -169,7 +171,7 @@ export default function CheckoutPage() {
     try {
       const { token, redirectUrl } = await getTransaction(order_id);
 
-      const res = await fetch(`/api/transaksi`, {
+      const res = await fetch(`${process.env.HOSTNAME}api/transaksi`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -190,7 +192,7 @@ export default function CheckoutPage() {
       if (res.ok) {
         await update({ carts: [] });
 
-        const updateUser = await fetch(`/api/user/cart`, {
+        const updateUser = await fetch(`${process.env.HOSTNAME}api/user/cart`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
