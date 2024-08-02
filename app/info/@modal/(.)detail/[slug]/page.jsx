@@ -1,6 +1,8 @@
 import Modal from "@/app/components/core/Modal";
 import { retriveDataBySlug } from "@/app/lib/firebase/service";
 
+export const dynamic = "force-dynamic";
+
 export default async function DetailInfoPage(props) {
   const { params } = props;
 

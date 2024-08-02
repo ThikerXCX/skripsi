@@ -137,7 +137,7 @@ export default function CheckoutPage() {
   };
 
   const getTransaction = async (order_id) => {
-    const response = await fetch(`/api/midtrans`, {
+    const response = await fetch(`${process.env.HOSTNAME}/api/midtrans`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
