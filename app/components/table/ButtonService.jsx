@@ -23,37 +23,45 @@ export default function ButtonService({ row }) {
   };
   const handlePengerjaan = async (rowData) => {
     rowData.status.push("Dalam Tahap Pengerjaan");
+    rowData.statusCode = 2;
     const response = await updateData(rowData);
     if (response.status === 200) {
       ShowToast("success", "status berhasil di update");
+      window.location.reload();
     } else {
       ShowToast("error", "ada masalah");
     }
   };
   const handleCancel = async (rowData) => {
     rowData.status.push("Cancel");
+    rowData.statusCode = 3;
     const response = await updateData(rowData);
     if (response.status === 200) {
       ShowToast("success", "status berhasil di update");
+      window.location.reload();
     } else {
       ShowToast("error", "ada masalah");
     }
   };
   const handleSetuju = async (rowData) => {
     rowData.status.push("Perbaikan Dilanjutkan");
+    rowData.statusCode = 4;
     const response = await updateData(rowData);
     if (response.status === 200) {
       ShowToast("success", "status berhasil di update");
+      window.location.reload();
     } else {
       ShowToast("error", "ada masalah");
     }
   };
   const handleSelesai = async (rowData) => {
     rowData.status.push("Perbaikan Telah Selesai");
+    rowData.statusCode = 5;
     const response = await updateData(rowData);
     await sendMessage(rowData, "feedback");
     if (response.status === 200) {
       ShowToast("success", "status berhasil di update");
+      window.location.reload();
     } else {
       ShowToast("error", "ada masalah");
     }
@@ -99,15 +107,14 @@ export default function ButtonService({ row }) {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const { biaya, keterangan } = result.value;
-        rowData.status.push(
-          "Kerusakan Sudah diketahui dan Dalam Konfirmasi Harga"
-        );
+        rowData.status.push("Menunggu Konfirmasi Pelanggan");
         rowData.biaya = biaya;
         rowData.keterangan = keterangan;
         const response = await updateData(rowData);
         await sendMessage(rowData, "konfirmasi");
         if (response.status === 200) {
           ShowToast("success", "status berhasil di update");
+          window.location.reload();
         } else {
           ShowToast("error", "ada masalah");
         }

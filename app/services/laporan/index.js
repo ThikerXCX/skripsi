@@ -1,4 +1,6 @@
 export async function getDataLaporan(url) {
+  console.log(url);
+
   const res = await fetch(url, {
     cache: "force-cache",
     next: {

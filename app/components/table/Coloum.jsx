@@ -158,6 +158,15 @@ export const coloumsService = [
     header: "No HP",
   },
   {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <div className="truncate whitespace-nowrap overflow-hidden">
+        {row.getValue("status")[row.getValue("status").length - 1]}
+      </div>
+    ),
+  },
+  {
     accessorKey: "keluhan",
     header: "Keluhan",
     cell: ({ row }) => (

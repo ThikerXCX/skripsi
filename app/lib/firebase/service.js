@@ -12,6 +12,7 @@ import {
   where,
   serverTimestamp,
   setDoc,
+  orderBy,
 } from "firebase/firestore";
 import { app, storage } from "./init";
 import { v4 } from "uuid";
@@ -197,7 +198,11 @@ export async function updateCartUser(email, data) {
 }
 
 export async function retriveProductUser() {
-  const q = query(collection(firestore, "products"), where("stock", "!=", "0"));
+  const q = query(
+    collection(firestore, "products"),
+    where("stock", "!=", "0"),
+    orderBy("created_at", "desc")
+  );
   const snapShot = await getDocs(q);
   const data = snapShot.docs.map((doc) => ({
     id: doc.id,
@@ -237,7 +242,8 @@ export async function addDataWithCustomId(collectionName, id, data) {
 export async function retriveDataLaporan() {
   const q = query(
     collection(firestore, "transaksi"),
-    where("status", "==", "settlement")
+    where("status", "==", "settlement"),
+    orderBy("created_at", "desc")
   );
   const snapShot = await getDocs(q);
   const data = snapShot.docs.map((doc) => ({
@@ -245,4 +251,47 @@ export async function retriveDataLaporan() {
     ...doc.data(),
   }));
   return data; // return the first matching document
+}
+
+export async function getDataWithDesc(collectionName) {
+  const q = query(
+    collection(firestore, collectionName),
+    orderBy("created_at", "desc")
+  );
+  const snapShot = await getDocs(q);
+  const data = snapShot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data;
+}
+export async function retriveDataBulanTertentu(collectionName, bulan, tahun) {
+  const awalBulan = new Date(tahun, bulan - 1, 1);
+  const akhirBulan = new Date(tahun, bulan, 0);
+  let q;
+
+  if (collectionName == "service") {
+    q = query(
+      collection(firestore, collectionName),
+      where("created_at", ">=", awalBulan),
+      where("created_at", "<=", akhirBulan),
+      orderBy("created_at", "desc"),
+      where("statusCode", "==", "5")
+    );
+  } else if (collectionName == "transaksi") {
+    q = query(
+      collection(firestore, collectionName),
+      where("created_at", ">=", awalBulan),
+      where("created_at", "<=", akhirBulan),
+      orderBy("created_at", "desc"),
+      where("status", "==", "settlement")
+    );
+  }
+
+  const snapShot = await getDocs(q);
+  const data = snapShot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data;
 }
