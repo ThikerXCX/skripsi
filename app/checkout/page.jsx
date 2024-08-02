@@ -8,6 +8,8 @@ import { ShowToast } from "../lib/utils/successalert";
 import Script from "next/script";
 import { v4 } from "uuid";
 
+export const dynamic = "force-dynamic";
+
 export default function CheckoutPage() {
   const { data: session, update } = useSession();
   const [provinsi, setProvinsi] = useState([]);
@@ -52,21 +54,6 @@ export default function CheckoutPage() {
     fetchData();
   }, [session]);
 
-  console.log(process.env.NEXT_PUBLIC_MIDTRANS_SERVER_KEY);
-  console.log(process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY);
-
-  console.log(
-    process.env.NEXT_PUBLIC_MIDTRANS_SERVER_KEY ===
-      "SB-Mid-server-CLc6csR0fEzO77QyenzCmbMV"
-      ? "server key sama"
-      : "server key gak sama"
-  );
-  console.log(
-    process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY ===
-      "SB-Mid-client-amBwa0Zs7RgOiSgp"
-      ? "client key sama"
-      : "client key gak sama"
-  );
   const handleProvinsiChange = async (e) => {
     const selectedProvinsi = e.target.value;
     setPenerima((prevState) => ({

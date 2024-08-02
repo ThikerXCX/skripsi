@@ -130,7 +130,7 @@ export default function NavbarUser() {
                         <div className="p-2">
                           <Link
                             href="/riwayat"
-                            className="block text-center w-full rounded-lg px-4 py-2 text-sm  bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75"
+                            className="block text-center w-full rounded-lg  bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75"
                             role="menuitem"
                           >
                             Riwayat Tranksasi
@@ -139,7 +139,7 @@ export default function NavbarUser() {
                         <div className="p-2">
                           <Link
                             href="/profile"
-                            className="block text-center w-full rounded-lg px-4 py-2 text-sm  bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75"
+                            className="block text-center w-full rounded-lg  bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75"
                             role="menuitem"
                           >
                             Profile
@@ -150,7 +150,7 @@ export default function NavbarUser() {
                             onClick={() => {
                               signOut();
                             }}
-                            className="block w-full rounded-lg px-4 py-2 text-sm  bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75"
+                            className="block w-full rounded-lg  bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75"
                             role="menuitem"
                           >
                             Log Out
