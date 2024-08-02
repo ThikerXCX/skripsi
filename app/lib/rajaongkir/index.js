@@ -1,7 +1,7 @@
 export async function getKota(id) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_HOSTNAME}/api.rajaongkir.com/starter/city?province=${id}`,
+      `https://api.rajaongkir.com/starter/city?province=${id}`,
 
       {
         next: {
@@ -33,7 +33,7 @@ export async function getProvinsi() {
       {
         method: "GET",
         headers: {
-          key: process.env.RAJA_ONGKIR_KEY,
+          key: process.env.NEXT_PUBLIC_RAJA_ONGKIR_KEYRAJA_ONGKIR_KEY,
         },
         cache: "force-cache",
         next: {
