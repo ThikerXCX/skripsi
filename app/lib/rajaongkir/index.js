@@ -1,7 +1,7 @@
 export async function getKota(id) {
   try {
     const response = await fetch(
-      `https://api.rajaongkir.com/starter/city?province=${id}`,
+      `${process.env.NEXT_PUBLIC_HOSTNAME}/api.rajaongkir.com/starter/city?province=${id}`,
 
       {
         next: {
