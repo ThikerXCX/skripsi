@@ -23,13 +23,24 @@ const firestore = getFirestore(app);
 export async function uploadImageToStorage(image) {
   const pathName = `images/${v4()}`;
   const storageRef = ref(storage, pathName);
-  await uploadBytes(storageRef, image);
+
+  // Define metadata with secret key
+  const metadata = {
+    customMetadata: {
+      secret_key: "d190da1n1", // Replace with your actual secret key
+    },
+  };
+
+  // Upload file with metadata
+  await uploadBytes(storageRef, image, metadata);
   const imageUrl = await getDownloadURL(storageRef);
+
   const res = {
     url: imageUrl,
     ref: pathName,
     type: image.type,
   };
+
   return res;
 }
 
