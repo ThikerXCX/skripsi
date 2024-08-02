@@ -4,7 +4,7 @@ import { retriveDataById, updateFieldById } from "@/app/lib/firebase/service";
 import { revalidateTag } from "next/cache";
 
 export async function POST(request) {
-  const serverKey = process.env.MIDTRANS_SERVER_KEY;
+  const serverKey = process.env.NEXT_PUBLIC_MIDTRANS_SERVER_KEY;
   const {
     order_id,
     status_code,

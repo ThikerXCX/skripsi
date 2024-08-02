@@ -6,7 +6,9 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function ProductPage() {
-  const { data } = await getDataProduk(`${process.env.HOSTNAME}api/product`);
+  const { data } = await getDataProduk(
+    `${process.env.NEXT_PUBLIC_HOSTNAME}api/product`
+  );
 
   return (
     <div className="w-full p-4 bg-slate-200 rounded-md h-screen">

@@ -6,7 +6,6 @@ import InputNumberComponenet from "@/app/components/form/inputNumberComponent";
 import SubmitButton from "@/app/components/form/submitButton";
 import { uploadImageToStorage } from "@/app/lib/firebase/service";
 import { Slugify } from "@/app/lib/helper";
-import { FieldValue } from "firebase/firestore";
 import Image from "next/image";
 import { useState, useRef } from "react";
 import Swal from "sweetalert2";

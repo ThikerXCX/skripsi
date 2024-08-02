@@ -15,7 +15,7 @@ export async function POST(request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        key: process.env.RAJA_ONGKIR_KEY,
+        key: process.env.NEXT_PUBLIC_RAJA_ONGKIR_KEY,
       },
       body: JSON.stringify({
         origin: "365",

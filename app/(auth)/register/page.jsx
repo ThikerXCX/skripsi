@@ -55,7 +55,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const res = await fetch(`/api/auth/register`, {
+      const res = await fetch(`${NEXT_PUBLIC_HOSTNAME}api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

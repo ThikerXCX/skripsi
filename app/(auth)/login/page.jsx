@@ -8,7 +8,7 @@ import { useState } from "react";
 import Image from "next/image";
 
 export default function LoginPage({ searchParams }) {
-  const urlCallback = searchParams.callbackUrl || "/";
+  const urlCallback = "/";
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { push } = useRouter();

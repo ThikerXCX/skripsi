@@ -19,7 +19,7 @@ export async function POST(request) {
     const res = await fetch(`https://api.fonnte.com/send`, {
       method: "POST",
       headers: {
-        Authorization: process.env.TOKEN_FONNTE,
+        Authorization: process.env.NEXT_PUBLIC_TOKEN_FONNTE,
       },
       body: data,
     });

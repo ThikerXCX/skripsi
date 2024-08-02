@@ -4,8 +4,8 @@ const Midtrans = require("midtrans-client");
 
 const snap = new Midtrans.Snap({
   isProduction: false,
-  serverKey: process.env.MIDTRANS_SERVER_KEY,
-  clientKey: process.env.MIDTRANS_CLIENT_KEY,
+  serverKey: process.env.NEXT_PUBLIC_MIDTRANS_SERVER_KEY,
+  clientKey: process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY,
 });
 
 export async function POST(request) {
