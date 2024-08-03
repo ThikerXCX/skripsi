@@ -1,9 +1,9 @@
 import { columnsTransaksi } from "../components/table/Coloum";
 import { DataTable } from "../components/table/DataTable";
-import { getDashBoard } from "../services/dashboard";
 
 export default async function AdminPage() {
-  const data = await getDashBoard();
+  const data = [];
+
   return (
     <div>
       <div className="w-full m rounded-md bg-slate-200">

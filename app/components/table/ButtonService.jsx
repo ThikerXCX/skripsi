@@ -35,6 +35,7 @@ export default function ButtonService({ row }) {
   const handleCancel = async (rowData) => {
     rowData.status.push("Cancel");
     rowData.statusCode = 3;
+    await sendMessage(rowData, "cancel");
     const response = await updateData(rowData);
     if (response.status === 200) {
       ShowToast("success", "status berhasil di update");
@@ -55,8 +56,20 @@ export default function ButtonService({ row }) {
     }
   };
   const handleSelesai = async (rowData) => {
-    rowData.status.push("Perbaikan Telah Selesai");
+    rowData.status.push("Perbaikan Telah Selesai Dikerjakan");
     rowData.statusCode = 5;
+    const response = await updateData(rowData);
+    await sendMessage(rowData, "selesai");
+    if (response.status === 200) {
+      ShowToast("success", "status berhasil di update");
+      window.location.reload();
+    } else {
+      ShowToast("error", "ada masalah");
+    }
+  };
+  const handleAmbil = async (rowData) => {
+    rowData.status.push("Perbaikan Telah Ambil");
+    rowData.statusCode = 6;
     const response = await updateData(rowData);
     await sendMessage(rowData, "feedback");
     if (response.status === 200) {
@@ -165,6 +178,14 @@ export default function ButtonService({ row }) {
           }}
         >
           Selesai
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={() => {
+            handleAmbil(row.original);
+          }}
+        >
+          Barang Telah Diambil
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -83,12 +83,22 @@ export default function NavbarAdmin() {
           </li>
           <li>
             <Link
-              href="/admin/laporan"
+              href="/admin/laporan/transaksi"
               className={`${
-                pathName === "/admin/laporan" ? "bg-slate-300" : ""
+                pathName === "/admin/laporan/transaksi" ? "bg-slate-300" : ""
               } block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-300 `}
             >
-              Laporan
+              Laporan Transaksi
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/laporan/service"
+              className={`${
+                pathName === "/admin/laporan/service" ? "bg-slate-300" : ""
+              } block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-slate-300 `}
+            >
+              Laporan Transaksi
             </Link>
           </li>
           <li>

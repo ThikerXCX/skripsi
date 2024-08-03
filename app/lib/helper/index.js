@@ -62,6 +62,51 @@ Tim EC Computer
   Jika ada pertanyaan lebih lanjut, jangan ragu untuk menghubungi kami.
     `;
   }
+  if (status == "selesai") {
+    message = `
+Selamat pagi ${data.namaCustomer}, 
+
+Kami dari EC Computer ingin menginformasikan bahwa barang service Anda dengan nomor service ${
+      data.id
+    } telah selesai.
+
+Berikut adalah detail informasi tentang barang service Anda:
+- Nama Barang: ${data.namaPerangkat}
+- No. Service: ${data.id}
+- Keluhan: ${data.keluhan}
+- Keluhan: ${data.keterangan}
+- Biaya Perbaikan: ${formatRupiah(data.biaya)}
+
+Barang Perbaikan Telah Selesai dikerjakan dan dapat diambil.
+
+Terima kasih atas kepercayaan Anda terhadap kami.
+
+hormat,
+Tim EC Computer
+Jika ada pertanyaan lebih lanjut, jangan ragu untuk menghubungi kami.
+`;
+  }
+  if (status == "cancel") {
+    message = `
+Selamat pagi ${data.namaCustomer}, 
+
+Kami dari EC Computer ingin menginformasikan bahwa barang service Anda dengan nomor service ${data.id}.
+
+Berikut adalah detail informasi tentang barang service Anda:
+- Nama Barang: ${data.namaPerangkat}
+- No. Service: ${data.id}
+- Status: Cancel
+
+Barang Perbaikan Sudah Bisa Diambil.
+
+Terima kasih atas kepercayaan Anda terhadap kami.
+
+hormat,
+Tim EC Computer
+
+Jika ada pertanyaan lebih lanjut, jangan ragu untuk menghubungi kami.
+`;
+  }
   if (status == "feedback") {
     const oneWeekInSeconds = 7 * 24 * 60 * 60;
     schedule = Math.floor(Date.now() / 1000) + oneWeekInSeconds;
@@ -80,10 +125,10 @@ kami ingin mengetahui bagaimana hasil barang perbaikan nya
 
 Terima kasih banyak atas waktu dan kerjasama Anda.
 
-Salam hangat,
+salam hangat,
 Tim EC Computer
-
 Jika ada pertanyaan lebih lanjut, jangan ragu untuk menghubungi kami.
+
   `;
   }
 

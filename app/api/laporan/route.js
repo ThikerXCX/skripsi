@@ -1,23 +1,34 @@
 import {
-  retriveDataById,
+  retriveDataBulanTertentu,
   retriveDataLaporan,
 } from "@/app/lib/firebase/service";
 import { NextResponse } from "next/server";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
-  console.log(searchParams.get("bulan"));
 
-  if (id) {
-    const detailtransaksi = await retriveDataById("transaksi", id);
-    if (detailtransaksi) {
-      console.log(detailtransaksi);
-      return NextResponse.json({ status: 200, data: detailtransaksi });
-    }
-    return NextResponse.json({ status: 404, message: "data not found" });
+  const bulan = searchParams.get("bulan");
+  const tahun = searchParams.get("tahun");
+
+  if (!tahun) {
+    return NextResponse.json({
+      status: 400,
+      message: "Parameter bulan dan tahun harus diisi",
+    });
   }
 
-  const transaksi = await retriveDataLaporan();
-  return NextResponse.json({ status: 200, data: transaksi });
+  try {
+    let data;
+    if (bulan) {
+      data = await retriveDataBulanTertentu("transaksi", bulan, tahun);
+    } else {
+      data = await retriveDataLaporan(tahun);
+    }
+    return NextResponse.json({ status: 200, data: data });
+  } catch (error) {
+    return NextResponse.json({
+      status: 500,
+      message: "Error saat mengambil data",
+    });
+  }
 }

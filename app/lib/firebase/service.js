@@ -13,6 +13,7 @@ import {
   serverTimestamp,
   setDoc,
   orderBy,
+  Timestamp,
 } from "firebase/firestore";
 import { app, storage } from "./init";
 import { v4 } from "uuid";
@@ -200,7 +201,7 @@ export async function updateCartUser(email, data) {
 export async function retriveProductUser() {
   const q = query(
     collection(firestore, "products"),
-    where("stock", "!=", "0"),
+    where("stock", ">", 0),
     orderBy("created_at", "desc")
   );
   const snapShot = await getDocs(q);
@@ -239,10 +240,17 @@ export async function addDataWithCustomId(collectionName, id, data) {
     };
   }
 }
-export async function retriveDataLaporan() {
+export async function retriveDataLaporan(tahun) {
+  const startDate = new Date(tahun, 0, 1);
+  const endDate = new Date(tahun, 11, 31, 23, 59, 59);
+
+  const startTimestamp = Timestamp.fromDate(startDate);
+  const endTimestamp = Timestamp.fromDate(endDate);
   const q = query(
     collection(firestore, "transaksi"),
     where("status", "==", "settlement"),
+    where("created_at", ">=", startTimestamp),
+    where("created_at", "<=", endTimestamp),
     orderBy("created_at", "desc")
   );
   const snapShot = await getDocs(q);
