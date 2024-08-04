@@ -35,6 +35,7 @@ export default function ButtonService({ row }) {
   const handleCancel = async (rowData) => {
     rowData.status.push("Cancel");
     rowData.statusCode = 3;
+    rowData.biaya = 50000;
     await sendMessage(rowData, "cancel");
     const response = await updateData(rowData);
     if (response.status === 200) {

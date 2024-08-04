@@ -51,6 +51,7 @@ export async function PUT(request) {
     const id = data.id;
 
     delete data.id;
+    delete data.created_at;
 
     const res = await updateFieldById("service", id, data);
     revalidateTag("service");

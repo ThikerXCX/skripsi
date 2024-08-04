@@ -55,17 +55,20 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const res = await fetch(`${NEXT_PUBLIC_HOSTNAME}api/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formValues,
-          carts: [],
-          alamat: [],
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_HOSTNAME}api/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formValues,
+            carts: [],
+            alamat: [],
+          }),
+        }
+      );
       const response = await res.json();
       if (response.status) {
         Swal.fire({

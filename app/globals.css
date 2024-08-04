@@ -2,29 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@media print {
-  body * {
-    visibility: hidden;
-  }
-  .printable,
-  .printable * {
-    visibility: visible;
-  }
-  .printable {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  .printable * {
-    box-sizing: border-box;
-  }
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;

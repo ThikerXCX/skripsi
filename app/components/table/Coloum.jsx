@@ -3,14 +3,20 @@ import { ArrowUpDown } from "lucide-react";
 import DropDownMenuAksi from "./DropDownMenuAksi";
 import { Button } from "@/components/ui/button";
 import ButtonService from "./ButtonService";
+import ButtonTransaksi from "./ButtonTransaksi";
 
 export const columnsTransaksi = [
   {
-    accessorKey: "transaksi",
+    accessorKey: "id",
     header: "Transaksi",
+    cell: ({ row }) => (
+      <div className="truncate whitespace-nowrap overflow-hidden max-w-xs">
+        {row.getValue("id")}
+      </div>
+    ),
   },
   {
-    accessorKey: "nama",
+    accessorKey: "name",
     header: "Nama",
   },
   {
@@ -34,11 +40,20 @@ export const columnsTransaksi = [
   {
     accessorKey: "total",
     header: "Total",
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("total"));
+      const formatted = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      }).format(amount);
+
+      return formatted;
+    },
   },
   {
     id: "actions",
     header: "aksi",
-    cell: ({ row }) => <DropDownMenuAksi row={row} />,
+    cell: ({ row }) => <ButtonTransaksi row={row} />,
   },
 ];
 

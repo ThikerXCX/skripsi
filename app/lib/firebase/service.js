@@ -107,9 +107,10 @@ export async function register(data) {
       statusCode: 400,
       message: "email sudah Terdaftar",
     };
-  } else {
-    data.password = await bcrypt.hash(data.password, 10);
   }
+  // else {
+  //   data.password = await bcrypt.hash(data.password, 10);
+  // }
   try {
     await addDoc(collection(firestore, "users"), data);
     return { status: true, message: "register berhasil", statusCode: 200 };
@@ -240,26 +241,6 @@ export async function addDataWithCustomId(collectionName, id, data) {
     };
   }
 }
-export async function retriveDataLaporan(tahun) {
-  const startDate = new Date(tahun, 0, 1);
-  const endDate = new Date(tahun, 11, 31, 23, 59, 59);
-
-  const startTimestamp = Timestamp.fromDate(startDate);
-  const endTimestamp = Timestamp.fromDate(endDate);
-  const q = query(
-    collection(firestore, "transaksi"),
-    where("status", "==", "settlement"),
-    where("created_at", ">=", startTimestamp),
-    where("created_at", "<=", endTimestamp),
-    orderBy("created_at", "desc")
-  );
-  const snapShot = await getDocs(q);
-  const data = snapShot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-  return data; // return the first matching document
-}
 
 export async function getDataWithDesc(collectionName) {
   const q = query(
@@ -273,26 +254,111 @@ export async function getDataWithDesc(collectionName) {
   }));
   return data;
 }
+
 export async function retriveDataBulanTertentu(collectionName, bulan, tahun) {
   const awalBulan = new Date(tahun, bulan - 1, 1);
-  const akhirBulan = new Date(tahun, bulan, 0);
+  const akhirBulan = new Date(tahun, bulan, 0, 23, 59, 59); // akhir bulan terakhir, jam 23:59:59
+
+  const startTimestamp = Timestamp.fromDate(awalBulan);
+  const endTimestamp = Timestamp.fromDate(akhirBulan);
+
   let q;
 
-  if (collectionName == "service") {
+  if (collectionName === "service") {
     q = query(
       collection(firestore, collectionName),
-      where("created_at", ">=", awalBulan),
-      where("created_at", "<=", akhirBulan),
-      orderBy("created_at", "desc"),
-      where("statusCode", "==", "5")
+      where("created_at", ">=", startTimestamp),
+      where("created_at", "<=", endTimestamp),
+      where("statusCode", "==", 6),
+      orderBy("created_at", "desc")
     );
-  } else if (collectionName == "transaksi") {
+  } else if (collectionName === "transaksi") {
     q = query(
       collection(firestore, collectionName),
-      where("created_at", ">=", awalBulan),
-      where("created_at", "<=", akhirBulan),
-      orderBy("created_at", "desc"),
-      where("status", "==", "settlement")
+      where("created_at", ">=", startTimestamp),
+      where("created_at", "<=", endTimestamp),
+      where("status", "==", "settlement"),
+      orderBy("created_at", "desc")
+    );
+  }
+
+  const snapShot = await getDocs(q);
+  const data = snapShot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data;
+}
+export async function retriveDataLaporan(collectionName, tahun) {
+  const startDate = new Date(tahun, 0, 1);
+  const endDate = new Date(tahun, 11, 31, 23, 59, 59);
+
+  const startTimestamp = Timestamp.fromDate(startDate);
+  const endTimestamp = Timestamp.fromDate(endDate);
+
+  let q;
+
+  if (collectionName === "transaksi") {
+    q = query(
+      collection(firestore, collectionName),
+      where("status", "==", "settlement"),
+      where("created_at", ">=", startTimestamp),
+      where("created_at", "<=", endTimestamp),
+      orderBy("created_at", "desc")
+    );
+  } else if (collectionName === "service") {
+    q = query(
+      collection(firestore, collectionName),
+      where("created_at", ">=", startTimestamp),
+      where("created_at", "<=", endTimestamp),
+      where("statusCode", "==", 6),
+      orderBy("created_at", "desc")
+    );
+  }
+
+  const snapShot = await getDocs(q);
+  const data = snapShot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data;
+}
+
+export async function retriveTransactionByEmail(email) {
+  const q = query(
+    collection(firestore, "transaksi"),
+    where("email", "==", email)
+  );
+  const snapShot = await getDocs(q);
+  const data = snapShot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  return data;
+}
+
+export async function retriveDataDashboard(collectionName, bulan, tahun) {
+  const awalBulan = new Date(tahun, bulan - 1, 1);
+  const akhirBulan = new Date(tahun, bulan, 0, 23, 59, 59); // akhir bulan terakhir, jam 23:59:59
+
+  const startTimestamp = Timestamp.fromDate(awalBulan);
+  const endTimestamp = Timestamp.fromDate(akhirBulan);
+
+  let q;
+
+  if (collectionName === "service") {
+    q = query(
+      collection(firestore, collectionName),
+      where("created_at", ">=", startTimestamp),
+      where("created_at", "<=", endTimestamp),
+      orderBy("created_at", "desc")
+    );
+  } else if (collectionName === "transaksi") {
+    q = query(
+      collection(firestore, collectionName),
+      where("created_at", ">=", startTimestamp),
+      where("created_at", "<=", endTimestamp),
+      orderBy("created_at", "desc")
     );
   }
 

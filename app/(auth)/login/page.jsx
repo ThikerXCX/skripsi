@@ -34,11 +34,13 @@ export default function LoginPage({ searchParams }) {
         }
         push("/");
       } else {
+        setLoading(false);
         if (res.status === 401) {
           setError("Data yang dimasukkan tidak cocok.");
         }
       }
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
   };

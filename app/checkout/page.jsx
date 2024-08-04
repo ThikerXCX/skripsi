@@ -179,6 +179,8 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           order_id: order_id,
           penerima: penerima,
+          statusCode: 1,
+          status_pengiriman: ["barang akan segera dikemas"],
           kurir: kurir,
           email: session?.user.email,
           ongkir: selectedOngkir.cost[0].value,

@@ -7,7 +7,9 @@ export async function getDataLaporanBulanan(bulan, tahun) {
         bulan
       )}&tahun=${encodeURIComponent(tahun)}`,
       {
-        cache: "no-store",
+        next: {
+          revalidate: 300,
+        },
       }
     );
     if (!res.ok) {
@@ -27,7 +29,9 @@ export async function getDataLaporanTahunan(tahun) {
         process.env.NEXT_PUBLIC_HOSTNAME
       }api/laporan?tahun=${encodeURIComponent(tahun)}`,
       {
-        cache: "no-store",
+        next: {
+          revalidate: 300,
+        },
       }
     );
     if (!res.ok) {

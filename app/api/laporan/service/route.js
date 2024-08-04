@@ -13,17 +13,18 @@ export async function GET(request) {
   if (!tahun) {
     return NextResponse.json({
       status: 400,
-      message: "Parameter bulan dan tahun harus diisi",
+      message: "Parameter tahun harus diisi",
     });
   }
 
   try {
     let data;
     if (bulan) {
-      data = await retriveDataBulanTertentu("transaksi", bulan, tahun);
+      data = await retriveDataBulanTertentu("service", bulan, tahun);
     } else {
-      data = await retriveDataLaporan("transaksi", tahun);
+      data = await retriveDataLaporan("service", tahun);
     }
+
     return NextResponse.json({ status: 200, data: data });
   } catch (error) {
     return NextResponse.json({

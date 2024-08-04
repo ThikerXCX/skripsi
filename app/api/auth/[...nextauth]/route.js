@@ -28,8 +28,8 @@ const authOptions = {
 
         const user = await login({ email });
         if (user) {
-          const passwordConfirm = await compare(password, user.password);
-          if (passwordConfirm) {
+          // const passwordConfirm = await compare(password, user.password);
+          if (password === user.password) {
             return user;
           }
           return null;
