@@ -79,9 +79,13 @@ const authOptions = {
       }
       return session;
     },
+    async signOut({ session, token }) {
+      return "/";
+    },
   },
   pages: {
     signIn: "/login",
+    signOut: "/",
   },
 };
 

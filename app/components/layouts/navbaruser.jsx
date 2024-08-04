@@ -147,9 +147,12 @@ export default function NavbarUser() {
                         </div>
                         <div className="p-2">
                           <button
-                            onClick={() => {
-                              signOut();
-                            }}
+                            onClick={() =>
+                              signOut({
+                                callbackUrl: "/",
+                                redirect: true,
+                              })
+                            }
                             className="block w-full rounded-lg  bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 transition hover:text-teal-600/75"
                             role="menuitem"
                           >
