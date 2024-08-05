@@ -84,7 +84,9 @@ export default function RiwayatTransaksiPage() {
                     ? "Barang dalam pengiriman"
                     : "Barang telah diterima"}
                 </td>
-                <td className="py-2 px-4 border-b">{trans.kode_pengiriman}</td>
+                <td className="py-2 px-4 border-b">
+                  {trans.kode_pengiriman.kodePengiriman}
+                </td>
                 <td className="py-2 px-4 border-b">
                   {new Date(
                     trans.created_at.seconds * 1000

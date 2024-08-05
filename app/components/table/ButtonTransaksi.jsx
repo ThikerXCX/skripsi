@@ -158,7 +158,6 @@ const ButtonTransaksi = ({ row }) => {
         rowData.status_pengiriman.push("Barang Telah dikirim");
         const response = await updateData(rowData);
         if (response.status === 200) {
-          console.log("status berhasil di update");
           window.location.reload();
         } else {
           console.log("ada masalah");

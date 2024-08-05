@@ -52,7 +52,7 @@ export default function AdminPage() {
 
   const { transaksiIs1, transaksiIs2Or3 } = transaksi.reduce(
     (acc, item) => {
-      if (item.status === 1) acc.transaksiIs1.push(item);
+      if (item.statusCode === 1) acc.transaksiIs1.push(item);
       else {
         acc.transaksiIs2Or3.push(item);
       }
