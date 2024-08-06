@@ -23,9 +23,16 @@ export async function POST(request) {
       },
       body: data,
     });
-    NextResponse.json(res);
+    const response = await res.json();
+
+    return NextResponse.json({
+      status: "200",
+      data: response,
+    });
   } catch (error) {
     console.error(error);
-    NextResponse.json({ error: "Terjadi kesalahan saat mengirimkan pesan" });
+    return NextResponse.json({
+      error: "Terjadi kesalahan saat mengirimkan pesan",
+    });
   }
 }
